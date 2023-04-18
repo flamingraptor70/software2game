@@ -1,0 +1,23 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 300
+}
+
+.centr_logo {
+    text-align: center;
+}
+
+
+main {
+    text-align: center;
+}
+
+.buttons {
+    text-align: center;
+    text-size-adjust: 400px;
+}
+
+footer {
+    text-align: center;
+
+}
