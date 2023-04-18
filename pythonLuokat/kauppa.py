@@ -1,8 +1,8 @@
-import pelaaja
+from pelaaja import Pelaaja as pl
 class Kauppa():
     def Kauppa(self):
         while True:
-            print(f"Rahamäärä: {GetRaha()} €. Polttoainemäärä: {GetPolttoAine()} km. Sotilasmäärä: {GetSotilaat()}\n")
+            print(f"Rahamäärä: {pl.GetRaha()} €. Polttoainemäärä: {pl.GetPolttoAine()} km. Sotilasmäärä: {pl.GetSotilaat()}\n")
             valinta = input("Valitse toiminto kirjoittamalla toimintoa vastaava luku:\n"
                             "1) Osta polttoainetta\n2) Osta sotilaita\n3) Poistu kaupasta\nValinta: ")
 
@@ -18,9 +18,9 @@ class Kauppa():
                 print("Epäkelpo luku. Yritä uudestaan.")
 
     def Maksu(self, hinta, maara, tyyppi):
-        polttoAine = float(GetPolttoAine())
-        raha = float(GetRaha())
-        omatSotilaat = float(GetSotilaat())
+        polttoAine = float(pl.GetPolttoAine())
+        raha = float(pl.GetRaha())
+        omatSotilaat = float(pl.GetSotilaat())
         if tyyppi == "polttoaine":
             valinta = input(f"Olet ostamassa polttoainetta {maara} km verran. Se tulee maksamaan {hinta} €.\n"
                             f"Syötä '1' hyväksyäksesi ostoksen tai syötä '2' kumotaksesi ostoksen: ")
@@ -28,8 +28,8 @@ class Kauppa():
                 if raha - hinta >= 0:
                     raha -= hinta
                     polttoAine += maara
-                    SetRaha(raha)
-                    SetPolttoAine(polttoAine)
+                    pl.SetRaha(raha)
+                    pl.SetPolttoAine(polttoAine)
                     return print("Kiitos ostoksestasi")
                 else:
                     return print("Rahasi eivät riitä ostokseen.")
@@ -42,8 +42,8 @@ class Kauppa():
                 if raha - hinta >= 0:
                     raha -= hinta
                     omatSotilaat += maara
-                    SetRaha(raha)
-                    SetSotilaat(omatSotilaat)
+                    pl.SetRaha(raha)
+                    pl.SetSotilaat(omatSotilaat)
                     return print("Kiitos ostoksestasi")
                 else:
                     return print("Rahasi eivät riitä ostokseen.")
