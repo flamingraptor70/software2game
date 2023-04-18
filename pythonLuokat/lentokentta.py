@@ -4,6 +4,7 @@ class Lentokentta():
         self.ident = ident
         self.sotilaat = 0
         self.valloitettu = False
+
         sql = "SELECT name, latitude_deg, longitude_deg FROM airport WHERE ident = '" + self.ident + "'"
         kursori = yhteys.cursor()
         kursori.execute(sql)
@@ -42,3 +43,6 @@ class Lentokentta():
 
     def Valloita(self):
         self.valloitettu = True
+
+    def getIdent(self):
+        return self.ident
