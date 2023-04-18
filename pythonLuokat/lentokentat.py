@@ -18,7 +18,7 @@ class Lentokentat():
                     for rivi2 in tulos2:
                         paikka = [rivi2[0], rivi2[1], rivi[0], "Ei valloitettu"]
                         self.paikat.append(paikka)
-        self.ValitseAloitus()
+        '''ValitseAloitus()'''
         return
 
     def LuoSotilaat(self, lista):
@@ -39,20 +39,7 @@ class Lentokentat():
                 kursori.execute(sql)
         return
 
-    def ValitseAloitus(self):
-        global nykySijainti
-        asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
-        for i in range(len(self.paikat)):
-            valiVaihe = self.paikat[i]
-            asemat += "Icao-koodi: " + valiVaihe[0] + ", nimi: " + valiVaihe[1] + ", maa: " + valiVaihe[2] + "\n"
-        '''
-        Tallenna tietokantaan muutokset
-        '''
-        print(asemat)
-        aloitusAsema = input("Aloitusasema: ")
-        nykySijainti = aloitusAsema
-        '''Valloita(nykySijainti)'''
-        return
+
     def GetLentokentanSotilaat(self, ident):
         sql = "SELECT Count FROM Troops WHERE Airport_ID = '" + ident + "'"
         kursori = yhteys.cursor()
