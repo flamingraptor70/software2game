@@ -49,7 +49,7 @@ class Pelaaja():
         '''
 
     def SetScore(self, score):
-        self.score = score
+        self.score += score
         '''
         uusiScore = float(GetScore()) + 100
         sql = "UPDATE Game SET Score = '" + str(uusiScore) + "' WHERE Game_ID = '" + str(PeliID) + "'"
