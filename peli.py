@@ -2,23 +2,15 @@ from lentokentta import Lentokentta
 from kauppa import Kauppa
 from pelaaja import Pelaaja
 from populatedb import conn as yhteys
+import random
+from geopy.distance import geodesic
 
 class Peli():
     def __init__(self):
         self.lentokentat = []
-        self.peliID = ""
 
     def LuoPeli(self, pNimi, polttoAine, omatSotilaat, raha, score):
-        Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
-        sql2 = "SELECT MAX(Game_ID) FROM Game WHERE User_name = '" + pNimi + "'"
-        kursori = yhteys.cursor()
-        kursori.execute(sql2)
-        tulos = kursori.fetchall()
-
-        if kursori.rowcount > 0:
-            for rivi in tulos:
-                self.peliID = rivi[0]
-        return
+        self.pelaaja = Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
 
     def ArvoPaikat(self):
         sql = "SELECT iso_country FROM airport WHERE continent = 'EU' GROUP BY iso_country ORDER BY RAND() LIMIT 3"
@@ -33,14 +25,20 @@ class Peli():
                 tulos2 = kursori.fetchall()
                 if kursori.rowcount > 0:
                     for rivi2 in tulos2:
-                        paikka = Lentokentta(rivi[0], yhteys)
-                        self.lentokentat.append(paikka)
+                        lKentta = Lentokentta(rivi2[0], yhteys)
+                        self.lentokentat.append(lKentta)
         self.ValitseAloitus()
         return
 
-    def Taistelu(ident):
-        omat = float(GetSotilaat())
-        viholliset = float(GetLentokentanSotilaat(ident))
+    def oikeaLentokentta(self, ident):
+        for i in range(len(self.lentokentat)):
+            if self.lentokentat[i].getIdent == ident:
+                return self.lentokentat[i]
+
+    def Taistelu(self, ident):
+        omat = float(self.pelaaja.GetSotilaat())
+        lKentta = self.oikeaLentokentta(ident)
+        viholliset = float(lKentta.getlentokentanSotilaat())
         if omat > 0:
             while True:
                 print("Taistelu meneilllään. Omat sotilaat: " + str(omat) + ", vihollisen sotilaat: " + str(viholliset))
@@ -62,22 +60,26 @@ class Peli():
                     print("Hävisit taistelun.")
                     if viholliset <= 0:
                         viholliset = 0
-                    SetSotilaat(omat)
-                    SetLentokentanSotilaat(ident, viholliset)
+                    self.pelaaja.SetSotilaat(omat)
+                    lKentta.setLentokentanSotilaat(viholliset)
+                    '''SetSotilaat(omat)
+                    SetLentokentanSotilaat(ident, viholliset)'''
                     return False
                 if viholliset <= 0:
                     viholliset = 0
-                    SetLentokentanSotilaat(ident, viholliset)
+                    '''SetLentokentanSotilaat(ident, viholliset)'''
+                    lKentta.setLentokentanSotilaat(viholliset)
                     if omat > 0:
                         print("Voitit taistelun.")
-                        SetSotilaat(omat)
+                        '''SetSotilaat(omat)'''
+                        self.pelaaja.SetSotilaat(omat)
                         return True
         else:
             print("Tarvitset sotilaita vallataksesi lentoaseman.")
             return False
 
-    def ValitseAloitus(self):
-        global nykySijainti
+    def ValitseAloitus(self, sijainti):
+        '''global nykySijainti'''
         asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
         for i in range(len(self.lentokentat)):
             valiVaihe = self.lentokentat[i]
@@ -87,16 +89,16 @@ class Peli():
             '''
         print(asemat)
         aloitusAsema = input("Aloitusasema: ")
-        nykySijainti = aloitusAsema
+        self.pelaaja.SetSijainti(sijainti)
         Valloita(nykySijainti)
         return
 
-    def Matkat(lista):
+    def Matkat(self):
         matkat = "Valitse matka kirjoittamalla lentokentän icao-koodi:\n"
         tyhja = True
-        polttoAine = float(GetPolttoAine())
-        for i in range(len(lista)):
-            valiVaihe = lista[i]
+        polttoAine = float(self.pelaaja.GetPolttoAine())
+        for i in range(len(self.lentokentat)):
+            valiVaihe = self.lentokentat[i]
             etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km
             if valiVaihe[0] != nykySijainti:
                 if etaisyys <= float(polttoAine) and valiVaihe[3] != "Valloitettu":
@@ -113,7 +115,7 @@ class Peli():
             return
         return
 
-    def Matkusta(kohde):
+    def Matkusta(self, kohde):
             global nykySijainti
             polttoAine = float(GetPolttoAine())
             etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km
