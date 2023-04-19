@@ -1,10 +1,16 @@
 class Pelaaja():
-    def __init__(self, raha, polttoaine, sotilaat, score, sijainti):
+    def __init__(self, pNimi, raha, polttoaine, sotilaat, score, yhteys, sijainti=""):
+        self.pNimi = pNimi
         self.raha = raha
         self.polttoaine = polttoaine
         self.sotilaat = sotilaat
         self.score = score
         self.sijainti = sijainti
+        self.yhteys = yhteys
+
+        sql = "INSERT INTO Game(Fuel, Money, Troops, User_name, Score) VALUES('" + self.polttoaine + "', '" + self.raha + "', '" + self.sotilaat + "', '" + self.pNimi + "', '" + self.score + "')"
+        kursori = self.yhteys.cursor()
+        kursori.execute(sql)
 
     def GetRaha(self):
         return self.raha

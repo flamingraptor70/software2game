@@ -1,8 +1,9 @@
 import random
 from pelaaja import Pelaaja
 class Lentokentta():
-    def __init__(self, ident):
+    def __init__(self, ident, yhteys):
         self.ident = ident
+        self.yhteys = yhteys
         self.sotilaat = 0
         self.valloitettu = False
 
@@ -25,11 +26,11 @@ class Lentokentta():
             maara = 1000
         self.sotilaat = maara
 
-        '''
+
         sql = "INSERT INTO Troops(Airport_ID, Count, Visited) VALUES('" + self.ident + "', '" + str(maara) + "', 0)"
-        kursori = yhteys.cursor()
+        kursori = self.yhteys.cursor()
         kursori.execute(sql)
-        '''
+
         return
 
     def getLentokentanSotilaat(self):
@@ -38,11 +39,11 @@ class Lentokentta():
     def setLentokentanSotilaat(self, maara):
         self.sotilaat = maara
 
-        '''
+
         sql = "UPDATE Troops SET Count = '" + str(maara) + "' WHERE Airport_ID = '" + self.ident + "'"
-        kursori = yhteys.cursor()
+        kursori = self.yhteys.cursor()
         kursori.execute(sql)
-        '''
+
         return
 
     def getLentokentanNimi(self):
@@ -56,11 +57,11 @@ class Lentokentta():
 
     def Valloita(self):
         self.valloitettu = True
-        '''
+
         sql = "UPDATE Troops SET Visited = '" + 0 + "' WHERE Airport_ID = '" + self.ident + "'"
-        kursori = yhteys.cursor()
+        kursori = self.yhteys.cursor()
         kursori.execute(sql)
-        '''
+
 
     def getIdent(self):
         return self.ident
