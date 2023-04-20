@@ -29,5 +29,5 @@ for query in queries:
 conn.commit()
 
 # Close the cursor and connection
-cursor.close()
-conn.close()
+'''cursor.close()
+conn.close()'''

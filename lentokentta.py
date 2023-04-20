@@ -7,13 +7,14 @@ class Lentokentta():
         self.sotilaat = 0
         self.valloitettu = False
 
-        sql = "SELECT name, latitude_deg, longitude_deg FROM airport WHERE ident = '" + self.ident + "'"
+        sql = "SELECT name, latitude_deg, longitude_deg, iso_country FROM airport WHERE ident = '" + self.ident + "'"
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchall()
         for rivi in tulos:
             self.nimi = rivi[0]
             self.koordinaatit = str(rivi[1]) + ", " + str(rivi[2])
+            self.maa = rivi[3]
 
     def luoSotilaat(self):
         noppa = random.randint(1, 3)
@@ -58,10 +59,13 @@ class Lentokentta():
     def Valloita(self):
         self.valloitettu = True
 
-        sql = "UPDATE Troops SET Visited = '" + 0 + "' WHERE Airport_ID = '" + self.ident + "'"
+        '''sql = "UPDATE Troops SET Visited = '0' WHERE Airport_ID = '" + self.ident + "'"'''
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 
 
     def getIdent(self):
         return self.ident
+
+    def getLentokentanMaa(self):
+        return self.maa

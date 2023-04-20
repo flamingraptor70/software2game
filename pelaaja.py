@@ -14,7 +14,6 @@ class Pelaaja():
         kursori.execute(sql)
 
         sql2 = "SELECT MAX(Game_ID) FROM Game WHERE User_name = '" + pNimi + "'"
-        kursori = yhteys.cursor()
         kursori.execute(sql2)
         tulos = kursori.fetchall()
 

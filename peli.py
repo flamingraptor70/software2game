@@ -34,7 +34,7 @@ class Peli():
 
     def oikeaLentokentta(self, ident):
         for i in range(len(self.lentokentat)):
-            if self.lentokentat[i].getIdent == ident:
+            if self.lentokentat[i].getIdent() == ident:
                 return self.lentokentat[i]
 
     def Taistelu(self, ident):
@@ -85,7 +85,7 @@ class Peli():
         asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
         for i in range(len(self.lentokentat)):
             valiVaihe = self.lentokentat[i]
-            asemat += "Icao-koodi: " + valiVaihe[0] + ", nimi: " + valiVaihe[1] + ", maa: " + valiVaihe[2] + "\n"
+            asemat += "Icao-koodi: " + valiVaihe.getIdent() + ", nimi: " + valiVaihe.getLentokentanNimi() + ", maa: " + valiVaihe.getLentokentanMaa() + "\n"
             '''
             Tallenna tietokantaan muutokset
             '''
@@ -93,6 +93,7 @@ class Peli():
         sijainti = input("Aloitusasema: ")
         self.pelaaja.SetSijainti(sijainti)
         self.oikeaLentokentta(sijainti).Valloita()
+
         '''Valloita(nykySijainti)'''
         return
 
