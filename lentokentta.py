@@ -61,7 +61,7 @@ class Lentokentta():
 
         '''sql = "UPDATE Troops SET Visited = '0' WHERE Airport_ID = '" + self.ident + "'"'''
         kursori = self.yhteys.cursor()
-        kursori.execute(sql)
+        '''kursori.execute(sql)'''
 
 
     def getIdent(self):

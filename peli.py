@@ -1,18 +1,19 @@
 from lentokentta import Lentokentta
 from kauppa import Kauppa
 from pelaaja import Pelaaja
-from populatedb import conn as yhteys
+from yhteys import yhteys
 import random
 from geopy.distance import geodesic
 
 class Peli():
-    def __init__(self):
-        self.lentokentat = []
-        self.havinnyt = False
-        self.kauppa = Kauppa()
+    def __init__(self, pNimi):
+        self.LuoPeli(pNimi, 1000, 1000, 1000, 0)
 
     def LuoPeli(self, pNimi, polttoAine, omatSotilaat, raha, score):
+        self.lentokentat = []
+        self.havinnyt = False
         self.pelaaja = Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
+        self.kauppa = Kauppa(self.pelaaja)
 
     def ArvoPaikat(self):
         sql = "SELECT iso_country FROM airport WHERE continent = 'EU' GROUP BY iso_country ORDER BY RAND() LIMIT 3"

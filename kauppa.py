@@ -1,10 +1,10 @@
-from pelaaja import Pelaaja as pl
+
 class Kauppa():
-    def __init__(self):
-        pass
+    def __init__(self, pelaaja):
+        self.pl = pelaaja
     def Kauppa(self):
         while True:
-            print(f"Rahamäärä: {pl.GetRaha()} €. Polttoainemäärä: {pl.GetPolttoAine()} km. Sotilasmäärä: {pl.GetSotilaat()}\n")
+            print(f"Rahamäärä: {self.pl.GetRaha()} €. Polttoainemäärä: {self.pl.GetPolttoAine()} km. Sotilasmäärä: {self.pl.GetSotilaat()}\n")
             valinta = input("Valitse toiminto kirjoittamalla toimintoa vastaava luku:\n"
                             "1) Osta polttoainetta\n2) Osta sotilaita\n3) Poistu kaupasta\nValinta: ")
 
@@ -20,9 +20,9 @@ class Kauppa():
                 print("Epäkelpo luku. Yritä uudestaan.")
 
     def Maksu(self, hinta, maara, tyyppi):
-        polttoAine = float(pl.GetPolttoAine())
-        raha = float(pl.GetRaha())
-        omatSotilaat = float(pl.GetSotilaat())
+        polttoAine = float(self.pl.GetPolttoAine())
+        raha = float(self.pl.GetRaha())
+        omatSotilaat = float(self.pl.GetSotilaat())
         if tyyppi == "polttoaine":
             valinta = input(f"Olet ostamassa polttoainetta {maara} km verran. Se tulee maksamaan {hinta} €.\n"
                             f"Syötä '1' hyväksyäksesi ostoksen tai syötä '2' kumotaksesi ostoksen: ")
@@ -30,8 +30,8 @@ class Kauppa():
                 if raha - hinta >= 0:
                     raha -= hinta
                     polttoAine += maara
-                    pl.SetRaha(raha)
-                    pl.SetPolttoAine(polttoAine)
+                    self.pl.SetRaha(raha)
+                    self.pl.SetPolttoAine(polttoAine)
                     return print("Kiitos ostoksestasi")
                 else:
                     return print("Rahasi eivät riitä ostokseen.")
@@ -44,8 +44,8 @@ class Kauppa():
                 if raha - hinta >= 0:
                     raha -= hinta
                     omatSotilaat += maara
-                    pl.SetRaha(raha)
-                    pl.SetSotilaat(omatSotilaat)
+                    self.pl.SetRaha(raha)
+                    self.pl.SetSotilaat(omatSotilaat)
                     return print("Kiitos ostoksestasi")
                 else:
                     return print("Rahasi eivät riitä ostokseen.")
