@@ -1,5 +1,4 @@
 import random
-from pelaaja import Pelaaja
 class Lentokentta():
     def __init__(self, ident, yhteys):
         self.ident = ident

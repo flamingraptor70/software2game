@@ -82,7 +82,6 @@ class Peli():
             return False
 
     def ValitseAloitus(self):
-        '''global nykySijainti'''
         asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
         for i in range(len(self.lentokentat)):
             valiVaihe = self.lentokentat[i]

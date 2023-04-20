@@ -10,3 +10,4 @@ peli = Peli("Atte")
 
 peli.ArvoPaikat()
 peli.ValitseAloitus()
+peli.matkusta()
