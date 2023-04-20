@@ -68,3 +68,6 @@ class Lentokentta():
 
     def getLentokentanMaa(self):
         return self.maa
+
+    def returnSelf(self):
+        return self

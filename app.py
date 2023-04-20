@@ -9,5 +9,5 @@ from peli import Peli
 peli = Peli("Atte")
 
 peli.ArvoPaikat()
-peli.ValitseAloitus()
-peli.matkusta()
+peli.luoSotilaatLentokentille()
+peli.Matkat()

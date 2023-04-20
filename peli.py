@@ -36,7 +36,9 @@ class Peli():
     def oikeaLentokentta(self, ident):
         for i in range(len(self.lentokentat)):
             if self.lentokentat[i].getIdent() == ident:
-                return self.lentokentat[i]
+                print(self.lentokentat[i])
+                print(self.lentokentat[i].returnSelf())
+                return self.lentokentat[i].returnSelf()
 
     def Taistelu(self, ident):
         omat = float(self.pelaaja.GetSotilaat())
@@ -103,7 +105,8 @@ class Peli():
         polttoAine = float(self.pelaaja.GetPolttoAine())
         for i in range(len(self.lentokentat)):
             valiVaihe = self.lentokentat[i].getIdent()
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()), self.oikeaLentokentta(valiVaihe).getLentokentanKoordinaatit()).km
+            print("Matkat: " + self.oikeaLentokentta(self.pelaaja.GetSijainti()).getIdent())
+            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()), self.lentokentat[i].getLentokentanKoordinaatit()).km
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km'''
             if valiVaihe != nykySijainti:
                 if etaisyys <= float(polttoAine) and valiVaihe[3] != "Valloitettu":
@@ -189,4 +192,9 @@ class Peli():
 
     def Kauppa(self):
         self.kauppa.Kauppa()
+
+    def luoSotilaatLentokentille(self):
+        for i in range(len(self.lentokentat)):
+            if self.lentokentat[i].onkoValloitettu() == False:
+                self.lentokentat[i].luoSotilaat()
 
