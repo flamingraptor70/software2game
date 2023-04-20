@@ -1,5 +1,7 @@
 from pelaaja import Pelaaja as pl
 class Kauppa():
+    def __init__(self):
+        pass
     def Kauppa(self):
         while True:
             print(f"Rahamäärä: {pl.GetRaha()} €. Polttoainemäärä: {pl.GetPolttoAine()} km. Sotilasmäärä: {pl.GetSotilaat()}\n")
