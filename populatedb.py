@@ -10,7 +10,8 @@ conn = mysql.connector.connect(
 )
 
 # Open the SQL file and read the contents
-with open('../../Desktop/db/import-db-python/lp.sql', 'r') as sql_file:
+'''with open('../../Desktop/db/import-db-python/lp.sql', 'r') as sql_file:'''
+with open(r'C:\Users\35840\Desktop\db\import-db-python\lp.sql', encoding="utf8") as sql_file:
     sql_script = sql_file.read()
 
 # Split the SQL script into separate queries

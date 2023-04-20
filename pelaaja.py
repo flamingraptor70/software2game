@@ -7,8 +7,9 @@ class Pelaaja():
         self.score = score
         self.sijainti = sijainti
         self.yhteys = yhteys
+        print(self.yhteys)
 
-        sql = "INSERT INTO Game(Fuel, Money, Troops, User_name, Score) VALUES('" + self.polttoaine + "', '" + self.raha + "', '" + self.sotilaat + "', '" + self.pNimi + "', '" + self.score + "')"
+        sql = "INSERT INTO Game(Fuel, Money, Troops, User_name, Score) VALUES('" + str(self.polttoaine) + "', '" + str(self.raha) + "', '" + str(self.sotilaat) + "', '" + self.pNimi + "', '" + str(self.score) + "')"
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 

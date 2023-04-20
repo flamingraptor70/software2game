@@ -80,7 +80,7 @@ class Peli():
             print("Tarvitset sotilaita vallataksesi lentoaseman.")
             return False
 
-    def ValitseAloitus(self, sijainti):
+    def ValitseAloitus(self):
         '''global nykySijainti'''
         asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
         for i in range(len(self.lentokentat)):
@@ -90,7 +90,7 @@ class Peli():
             Tallenna tietokantaan muutokset
             '''
         print(asemat)
-        aloitusAsema = input("Aloitusasema: ")
+        sijainti = input("Aloitusasema: ")
         self.pelaaja.SetSijainti(sijainti)
         self.oikeaLentokentta(sijainti).Valloita()
         '''Valloita(nykySijainti)'''
