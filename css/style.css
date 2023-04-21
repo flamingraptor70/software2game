@@ -2,42 +2,16 @@ html {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 300
 }
+
 body {
     margin: 0px
-}
-
-.centr_logo {
-    text-align: center;
-    color: rgb(255, 255, 255);
-    font-size: 30px;
-    
-}
-
-.navigation {
-    background-color: rgb(0, 0, 0);
-    color: black;
-    display: block;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    overflow: hidden;
-    width: 100%; 
-    margin: 0;
-    padding: 0;
-}
-
-main {
-    text-align: center;
-}
-
-.buttons {
-    text-align: center;
 }
 
 a {
     text-decoration: none;
     color: #683b00;
     background: #f7af5d;
-    border-radius: 5px;
+    border-radius: 7px;
     transition: none;
     display: inline-block;
     padding: 3px 11px;
@@ -55,6 +29,10 @@ a:hover {
     color: rgb(255, 255, 255);
 }
 
+main {
+    text-align: center;
+}
+
 footer {
     text-align: center;
     display: block;
@@ -67,11 +45,50 @@ footer {
     padding: 0;
 }
 
-.social_media{
-    color: white;
+.picture_logo {
+    width: 85%;
+    margin: auto;
+    text-align: right;
 }
 
-.aboutus_header{
+.picture_logo img {
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-width: 5%;
+}
+
+.centr_logo {
     text-align: center;
-    font-size: x-large;
+    color: #f7af5d;
+    font-size: 50px;
+    
+}
+
+.navigation {
+    background-color: rgb(0, 0, 0);
+    color: black;
+    display: block;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    width: 100%; 
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.buttons {
+    text-align: center;
+    margin-left: 70px;
+    margin-right: 70px;
+}
+
+
+
+.social_media{
+    color: white;
 }
