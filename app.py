@@ -19,9 +19,7 @@ def newGame(pNimi):
 
 @app.route("/vAloitus/<icao>")
 def vAloitus(icao):
-    if peli != "":
-        peli.ValitseAloitus(icao)
-
+    peli.ValitseAloitus(icao)
     return peli.pelaajaTiedot()
 
 
