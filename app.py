@@ -10,13 +10,19 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config["CORS_HEADERS"] = "content-type"
 
-peli = ""
+peli = Peli()
 @app.route("/newGame/<pNimi>")
 def newGame(pNimi):
-    global peli
-    peli = Peli(pNimi)
-    return peli.pelaajaTiedot()
+    peli.LuoPeli(pNimi, 1000, 1000, 1000, 0)
+    peli.ArvoPaikat()
+    return peli.getPaikat()
 
+@app.route("/vAloitus/<icao>")
+def vAloitus(icao):
+    if peli != "":
+        peli.ValitseAloitus(icao)
+
+    return peli.pelaajaTiedot()
 
 
 

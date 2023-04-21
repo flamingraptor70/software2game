@@ -6,8 +6,8 @@ import random
 from geopy.distance import geodesic
 
 class Peli():
-    def __init__(self, pNimi):
-        self.LuoPeli(pNimi, 1000, 1000, 1000, 0)
+    def __init__(self):
+        pass
 
     def LuoPeli(self, pNimi, polttoAine, omatSotilaat, raha, score):
         self.lentokentat = []
@@ -30,8 +30,21 @@ class Peli():
                     for rivi2 in tulos2:
                         lKentta = Lentokentta(rivi2[0], yhteys)
                         self.lentokentat.append(lKentta)
-        self.ValitseAloitus()
         return
+
+    def getPaikat(self):
+        paikat = []
+        for i in range(len(self.lentokentat)):
+            lkentta = {
+                "icao": self.lentokentat[i].getIdent(),
+                "maa": self.lentokentat[i].getLentokentanMaa(),
+                "nimi": self.lentokentat[i].getLentokentanNimi(),
+                "sotilaat": self.lentokentat[i].getLentokentanSotilaat(),
+                "valloitettu": self.lentokentat[i].onkoValloitettu(),
+                "koordinaatit": self.lentokentat[i].getLentokentanKoordinaatit()
+            }
+            paikat.append(lkentta)
+        return paikat
 
     def oikeaLentokentta(self, ident):
         for i in range(len(self.lentokentat)):
