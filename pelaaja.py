@@ -36,6 +36,9 @@ class Pelaaja():
     def GetSijainti(self):
         return self.sijainti
 
+    def GetNimi(self):
+        return self.pNimi
+
     def SetRaha(self, raha):
         self.raha = raha
 

@@ -13,10 +13,11 @@ app.config["CORS_HEADERS"] = "content-type"
 peli = ""
 @app.route("/newGame/<pNimi>")
 def newGame(pNimi):
-    print("täällä")
     global peli
     peli = Peli(pNimi)
-    return
+    return peli.pelaajaTiedot()
+
+
 
 
 

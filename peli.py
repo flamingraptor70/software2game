@@ -196,3 +196,14 @@ class Peli():
             if self.lentokentat[i].onkoValloitettu() == False:
                 self.lentokentat[i].luoSotilaat()
 
+    def pelaajaTiedot(self):
+        pelaaja = {
+            "nimi": self.pelaaja.GetNimi(),
+            "raha": self.pelaaja.GetRaha(),
+            "pAine": self.pelaaja.GetPolttoAine(),
+            "sotilaat": self.pelaaja.GetSotilaat(),
+            "score": self.pelaaja.GetScore(),
+            "sijainti": self.pelaaja.GetSijainti()
+        }
+        return pelaaja
+
