@@ -10,4 +10,5 @@ peli = Peli("Atte")
 
 peli.ArvoPaikat()
 peli.luoSotilaatLentokentille()
-peli.Matkat()
+'''peli.Matkat()'''
+peli.Kauppa()

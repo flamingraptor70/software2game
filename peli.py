@@ -36,9 +36,8 @@ class Peli():
     def oikeaLentokentta(self, ident):
         for i in range(len(self.lentokentat)):
             if self.lentokentat[i].getIdent() == ident:
-                print(self.lentokentat[i])
-                print(self.lentokentat[i].returnSelf())
-                return self.lentokentat[i].returnSelf()
+                print(self.lentokentat[i].getIdent())
+                return self.lentokentat[i]
 
     def Taistelu(self, ident):
         omat = float(self.pelaaja.GetSotilaat())
@@ -104,15 +103,14 @@ class Peli():
         tyhja = True
         polttoAine = float(self.pelaaja.GetPolttoAine())
         for i in range(len(self.lentokentat)):
-            valiVaihe = self.lentokentat[i].getIdent()
-            print("Matkat: " + self.oikeaLentokentta(self.pelaaja.GetSijainti()).getIdent())
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()), self.lentokentat[i].getLentokentanKoordinaatit()).km
+            valiVaihe = self.lentokentat[i]
+            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()).getLentokentanKoordinaatit(), valiVaihe.getLentokentanKoordinaatit()).km
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km'''
-            if valiVaihe != nykySijainti:
-                if etaisyys <= float(polttoAine) and valiVaihe[3] != "Valloitettu":
+            if valiVaihe != self.pelaaja.GetSijainti():
+                if etaisyys <= float(polttoAine) and valiVaihe.onkoValloitettu() == False:
                     tyhja = False
-                    matkat += "Icao-koodi: " + valiVaihe[0] + ", nimi: " + valiVaihe[1] + ", maa: " + valiVaihe[2] \
-                                + ", matka: " + str(etaisyys) + ", " + valiVaihe[3] + ", sotilaat: " + str(valiVaihe.getLentokentanSotilaat()) + "\n"
+                    matkat += "Icao-koodi: " + valiVaihe.getIdent() + ", nimi: " + valiVaihe.getLentokentanNimi() + ", maa: " + valiVaihe.getLentokentanMaa() \
+                                + ", matka: " + str(etaisyys) + ", sotilaat: " + str(valiVaihe.getLentokentanSotilaat()) + "\n"
         if tyhja == True:
             return print("Et voi matkustaa mihinkään.")
         else:
@@ -125,7 +123,7 @@ class Peli():
     def Matkusta(self, kohde):
             global nykySijainti
             polttoAine = float(self.pelaaja.GetPolttoAine())
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
+            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km'''
             if etaisyys <= polttoAine and GetValloitus(kohde) != "Valloitettu":
                 if self.Taistelu(kohde):

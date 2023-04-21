@@ -39,7 +39,7 @@ class Pelaaja():
     def SetRaha(self, raha):
         self.raha = raha
 
-        sql = "UPDATE Game SET Money = '" + str(raha) + "' WHERE Game_ID = '" + self.peliID + "'"
+        sql = "UPDATE Game SET Money = '" + str(raha) + "' WHERE Game_ID = '" + str(self.peliID) + "'"
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 
@@ -47,7 +47,7 @@ class Pelaaja():
     def SetPolttoAine(self, polttoAine):
         self.polttoaine = polttoAine
 
-        sql = "UPDATE Game SET Fuel = '" + self.polttoaine + "' WHERE Game_ID = '" + self.peliID + "'"
+        sql = "UPDATE Game SET Fuel = '" + str(polttoAine) + "' WHERE Game_ID = '" + str(self.peliID) + "'"
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 
@@ -55,7 +55,7 @@ class Pelaaja():
     def SetSotilaat(self, sotilaat):
         self.sotilaat = sotilaat
 
-        sql = "UPDATE Game SET Troops = '" + self.sotilaat + "' WHERE Game_ID = '" + self.peliID + "'"
+        sql = "UPDATE Game SET Troops = '" + str(sotilaat) + "' WHERE Game_ID = '" + str(self.peliID) + "'"
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 
@@ -63,7 +63,7 @@ class Pelaaja():
     def SetScore(self, score):
         self.score += score
 
-        sql = "UPDATE Game SET Score = '" + self.score + "' WHERE Game_ID = '" + self.peliID + "'"
+        sql = "UPDATE Game SET Score = '" + str(self.score) + "' WHERE Game_ID = '" + str(self.peliID) + "'"
         kursori = self.yhteys.cursor()
         kursori.execute(sql)
 
