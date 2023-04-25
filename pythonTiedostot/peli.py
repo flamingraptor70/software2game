@@ -138,7 +138,7 @@ class Peli():
             polttoAine = float(self.pelaaja.GetPolttoAine())
             etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km'''
-            if etaisyys <= polttoAine and GetValloitus(kohde) != "Valloitettu":
+            if etaisyys <= polttoAine and self.oikeaLentokentta(kohde).onkoValloitettu() == False:
                 if self.Taistelu(kohde):
                     polttoAine -= etaisyys
                     nykySijainti = kohde
