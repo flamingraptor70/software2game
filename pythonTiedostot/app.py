@@ -24,19 +24,27 @@ def vAloitus(icao):
 
 @app.route("/ostaPAine/<maara>")
 def ostaPAine(maara):
-    if peli.pelaaja.GetRaha() - maara / 2 > 0:
+    maara = float(maara)
+    if peli.pelaaja.GetRaha() - maara / 2 >= 0:
         peli.ostaPolttoAinetta(maara)
         return peli.pelaajaTiedot()
     else:
-        return "Ostoa ei voitu suorittaa"
+        vastaus = {
+            "vastaus": "Rahat eivät riitä ostokseen"
+        }
+        return vastaus
 
 @app.route("/ostaSotilaita/<maara>")
 def ostaSotilaita(maara):
-    if peli.pelaaja.GetRaha() - maara * 2 > 0:
+    maara = float(maara)
+    if peli.pelaaja.GetRaha() - maara * 2 >= 0:
         peli.ostaSotilaita(maara)
         return peli.pelaajaTiedot()
     else:
-        return "Ostoa ei voitu suorittaa"
+        vastaus = {
+            "vastaus": "Rahat eivät riitä ostokseen"
+        }
+        return vastaus
 
 
 

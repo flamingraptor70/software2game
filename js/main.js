@@ -2,6 +2,8 @@
 
 const nForm = document.getElementById("nameForm");
 const aloitusPaikkaForm = document.getElementById("aPForm");
+const pAineForm = document.getElementById("ostaPAineForm");
+const sotilasForm = document.getElementById("ostaSotilaitaForm");
 const paikatDiv = document.getElementById("paikatDiv");
 
 async function newGame(evt) {
@@ -26,20 +28,47 @@ function tulostaPaikat(jsonData) {
       p.appendChild(maaText);
       p.appendChild(icao);
 
-      article.appendChild(header)
-      article.appendChild(p)
+      article.appendChild(header);
+      article.appendChild(p);
 
-    paikatDiv.appendChild(article)
+    paikatDiv.appendChild(article);
   }
 }
 
 async function aloitusPaikka(evt) {
-  evt.preventDefault()
+  evt.preventDefault();
   const aPaikka =document.querySelector("input[name=aPaikka]").value;
   const response = await fetch("http://127.0.0.1:5000/vAloitus/" + aPaikka);
   const jsonData = await response.json();
   console.log(jsonData);
 }
 
+async function ostaPolttoAine(evt) {
+  evt.preventDefault();
+  const maara = document.querySelector("input[name=pAineMaara]").value;
+  const response = await fetch("http://127.0.0.1:5000/ostaPAine/" + maara);
+  const jsonData = await response.json();
+  console.log(jsonData);
+  osto(jsonData);
+}
+
+function osto(jsonData) {
+  if("vastaus" in jsonData) {
+    console.log("ei onnistunut");
+  } else {
+    console.log("onnistui");
+  }
+}
+
+async function ostaSotilaita(evt) {
+  evt.preventDefault();
+  const maara = document.querySelector("input[name=sotilasMaara]").value;
+  const response = await fetch("http://127.0.0.1:5000/ostaSotilaita/" + maara);
+  const jsonData = await response.json();
+  console.log(jsonData);
+}
+
 nForm.addEventListener("submit", newGame);
 aloitusPaikkaForm.addEventListener("submit", aloitusPaikka);
+pAineForm.addEventListener("submit", ostaPolttoAine);
+sotilasForm.addEventListener("submit", ostaSotilaita);

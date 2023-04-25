@@ -221,19 +221,19 @@ class Peli():
         return pelaaja
 
     def maksu(self, hinta, maara, tyyppi):
-        polttoAine = float(self.pl.GetPolttoAine())
-        raha = float(self.pl.GetRaha())
-        omatSotilaat = float(self.pl.GetSotilaat())
+        polttoAine = float(self.pelaaja.GetPolttoAine())
+        raha = float(self.pelaaja.GetRaha())
+        omatSotilaat = float(self.pelaaja.GetSotilaat())
         if tyyppi == "polttoaine":
             raha -= hinta
             polttoAine += maara
-            self.pl.SetRaha(raha)
-            self.pl.SetPolttoAine(polttoAine)
+            self.pelaaja.SetRaha(raha)
+            self.pelaaja.SetPolttoAine(polttoAine)
         elif tyyppi == "sotilas":
             raha -= hinta
             omatSotilaat += maara
-            self.pl.SetRaha(raha)
-            self.pl.SetSotilaat(omatSotilaat)
+            self.pelaaja.SetRaha(raha)
+            self.pelaaja.SetSotilaat(omatSotilaat)
 
     def ostaPolttoAinetta(self, maara):
         # 2km = 1€
