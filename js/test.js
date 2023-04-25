@@ -1,5 +1,23 @@
 'use strict'
 
+const map = L.map('map', { tap: false });
+L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+  noWrap: true,
+  bounds: [
+    [-90, -180],
+    [90, 180]
+  ],
+  maxZoom: 20,
+  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+}).addTo(map);
+map.setView([60, 24], 7);
+const markers = L.featureGroup().addTo(map)
+const marker = L.marker([80, 60]).addTo(map);
+markers.addLayer(marker)
+marker.addEventListener("click", function(){
+  console.log("Klikattu")
+})
+
 const nForm = document.getElementById("nameForm");
 const aloitusPaikkaForm = document.getElementById("aPForm");
 const pAineForm = document.getElementById("ostaPAineForm");
@@ -43,6 +61,14 @@ async function aloitusPaikka(evt) {
   console.log(jsonData);
 }
 
+function osto(jsonData) {
+  if("vastaus" in jsonData) {
+    console.log("ei onnistunut");
+  } else {
+    console.log("onnistui");
+  }
+}
+
 async function ostaPolttoAine(evt) {
   evt.preventDefault();
   const maara = document.querySelector("input[name=pAineMaara]").value;
@@ -52,20 +78,13 @@ async function ostaPolttoAine(evt) {
   osto(jsonData);
 }
 
-function osto(jsonData) {
-  if("vastaus" in jsonData) {
-    console.log("ei onnistunut");
-  } else {
-    console.log("onnistui");
-  }
-}
-
 async function ostaSotilaita(evt) {
   evt.preventDefault();
   const maara = document.querySelector("input[name=sotilasMaara]").value;
   const response = await fetch("http://127.0.0.1:5000/ostaSotilaita/" + maara);
   const jsonData = await response.json();
   console.log(jsonData);
+  osto(jsonData);
 }
 
 nForm.addEventListener("submit", newGame);
