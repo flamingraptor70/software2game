@@ -1,6 +1,7 @@
 'use strict'
 
 const nForm = document.getElementById("nameForm");
+const aloitusPaikkaForm = document.getElementById("aPForm");
 const paikatDiv = document.getElementById("paikatDiv");
 
 async function newGame(evt) {
@@ -32,4 +33,13 @@ function tulostaPaikat(jsonData) {
   }
 }
 
+async function aloitusPaikka(evt) {
+  evt.preventDefault()
+  const aPaikka =document.querySelector("input[name=aPaikka]").value;
+  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + aPaikka);
+  const jsonData = await response.json();
+  console.log(jsonData);
+}
+
 nForm.addEventListener("submit", newGame);
+aloitusPaikkaForm.addEventListener("submit", aloitusPaikka);

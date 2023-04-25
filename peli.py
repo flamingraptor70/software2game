@@ -13,7 +13,7 @@ class Peli():
         self.lentokentat = []
         self.havinnyt = False
         self.pelaaja = Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
-        self.kauppa = Kauppa(self.pelaaja)
+        '''self.kauppa = Kauppa(self.pelaaja)'''
 
     def ArvoPaikat(self):
         sql = "SELECT iso_country FROM airport WHERE continent = 'EU' GROUP BY iso_country ORDER BY RAND() LIMIT 3"
@@ -201,8 +201,8 @@ class Peli():
     def onkoHavinnyt(self):
         return self.havinnyt
 
-    def Kauppa(self):
-        self.kauppa.Kauppa()
+    '''def Kauppa(self):
+        self.kauppa.Kauppa()'''
 
     def luoSotilaatLentokentille(self):
         for i in range(len(self.lentokentat)):
@@ -219,4 +219,29 @@ class Peli():
             "sijainti": self.pelaaja.GetSijainti()
         }
         return pelaaja
+
+    def maksu(self, hinta, maara, tyyppi):
+        polttoAine = float(self.pl.GetPolttoAine())
+        raha = float(self.pl.GetRaha())
+        omatSotilaat = float(self.pl.GetSotilaat())
+        if tyyppi == "polttoaine":
+            raha -= hinta
+            polttoAine += maara
+            self.pl.SetRaha(raha)
+            self.pl.SetPolttoAine(polttoAine)
+        elif tyyppi == "sotilas":
+            raha -= hinta
+            omatSotilaat += maara
+            self.pl.SetRaha(raha)
+            self.pl.SetSotilaat(omatSotilaat)
+
+    def ostaPolttoAinetta(self, maara):
+        # 2km = 1€
+        self.maksu(maara / 2, maara, "polttoaine")
+
+    def ostaSotilaita(self, maara):
+        # 1s = 2€
+        self.maksu(maara * 2, maara, "sotilas")
+
+
 
