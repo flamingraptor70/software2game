@@ -22,6 +22,10 @@ def vAloitus(icao):
     peli.ValitseAloitus(icao)
     return peli.pelaajaTiedot()
 
+@app.route("/paikat")
+def paikat():
+    return peli.getPaikat()
+
 @app.route("/ostaPAine/<maara>")
 def ostaPAine(maara):
     maara = float(maara)

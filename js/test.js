@@ -2,6 +2,7 @@
 
 const sw = L.latLng(-90, -180), ne = L.latLng(90, 180);
 const bounds = L.latLngBounds(sw, ne);
+let aValittu = false;
 
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
@@ -59,27 +60,48 @@ function paikatKarttaan(jsonData) {
     const lon = jsonData[i].lon;
     console.log(jsonData[i].lat + ", " + jsonData[i].lon)
     const marker = L.marker([lat, lon]).addTo(map);
-    marker.addEventListener("click", () => {openModal(jsonData[i], lkenttaDialog)});
+    marker.addEventListener("click", () => {lKenttaPopup(jsonData[i], marker)});
     markers.addLayer(marker);
   }
 }
 
-/*function lkenttaTiedot(lKentta) {
-  console.log("Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao);
-  return "Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao;
-}*/
+function lKenttaPopup(lKentta, marker) {
+  if(aValittu === true) {
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupButton = document.createElement("button");
+    popupButton.appendChild(document.createTextNode("Matkusta"))
+    //popupButton.addEventListener("click", () => {matkusta(lKentta.icao)})
 
-function openModal(lKentta, dialog) {
-  dialog.getElementsByTagName("h2")[0].innerHTML = ""
-  dialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode(lKentta.nimi));
-  //dialog.getElementsByTagName("button")[0].addEventListener();
-  dialog.showModal();
-  const span = dialog.getElementsByTagName("span")[0];
-  span.addEventListener("click", () => {closeModal(dialog)});
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupButton);
+
+    marker.bindPopup(popup);
+  } else {
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupButton = document.createElement("button");
+    popupButton.appendChild(document.createTextNode("Valitse aloituspaikka"))
+    popupButton.addEventListener("click", () => {aloitus(lKentta.icao)})
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupButton);
+
+    marker.bindPopup(popup);
+  }
 }
 
-function closeModal(dialog) {
-  dialog.close();
+async function aloitus(icao) {
+  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + icao);
+  const jsonData = await response.json();
+  console.log(jsonData);
+  aValittu = true
+}
+
+function matkusta(icao) {
+
 }
 
 async function aloitusPaikka(evt) {
