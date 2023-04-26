@@ -2,6 +2,7 @@
 
 const sw = L.latLng(-90, -180), ne = L.latLng(90, 180);
 const bounds = L.latLngBounds(sw, ne);
+let aValittu = false;
 
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
@@ -13,7 +14,6 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
   minZoom: 4,
   maxZoom: 20,
   subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-  maxBoundsViscosity: 1.0,
 }).addTo(map);
 map.setView([60, 24], 7);
 const markers = L.featureGroup().addTo(map);
@@ -53,20 +53,55 @@ async function newGame(evt) {
   }
 }*/
 
-async function lkenttaTiedot(lKentta) {
-  console.log("Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao);
-  return "Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao;
-}
-
+const lkenttaDialog = document.getElementById("lKenttaTiedot");
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
     const lat = jsonData[i].lat;
     const lon = jsonData[i].lon;
     console.log(jsonData[i].lat + ", " + jsonData[i].lon)
     const marker = L.marker([lat, lon]).addTo(map);
-    marker.addEventListener("click", () => {lkenttaTiedot(jsonData[i])});
+    marker.addEventListener("click", () => {lKenttaPopup(jsonData[i], marker)});
     markers.addLayer(marker);
   }
+}
+
+function lKenttaPopup(lKentta, marker) {
+  if(aValittu === true) {
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupButton = document.createElement("button");
+    popupButton.appendChild(document.createTextNode("Matkusta"))
+    //popupButton.addEventListener("click", () => {matkusta(lKentta.icao)})
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupButton);
+
+    marker.bindPopup(popup);
+  } else {
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupButton = document.createElement("button");
+    popupButton.appendChild(document.createTextNode("Valitse aloituspaikka"))
+    popupButton.addEventListener("click", () => {aloitus(lKentta.icao)})
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupButton);
+
+    marker.bindPopup(popup);
+  }
+}
+
+async function aloitus(icao) {
+  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + icao);
+  const jsonData = await response.json();
+  console.log(jsonData);
+  aValittu = true
+}
+
+function matkusta(icao) {
+
 }
 
 async function aloitusPaikka(evt) {

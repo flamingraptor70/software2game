@@ -23,7 +23,7 @@ class Peli():
 
         if kursori.rowcount > 0:
             for rivi in tulos:
-                sql2 = "SELECT ident FROM airport WHERE iso_country = '" + rivi[0] + "' ORDER BY RAND() LIMIT 1"
+                sql2 = "SELECT ident FROM airport WHERE iso_country = '" + rivi[0] + "' and continent = 'EU' ORDER BY RAND() LIMIT 1"
                 kursori.execute(sql2)
                 tulos2 = kursori.fetchall()
                 if kursori.rowcount > 0:
@@ -42,7 +42,8 @@ class Peli():
                 "sotilaat": self.lentokentat[i].getLentokentanSotilaat(),
                 "valloitettu": self.lentokentat[i].onkoValloitettu(),
                 "lat": self.lentokentat[i].getLentokentanLat(),
-                "lon": self.lentokentat[i].getLentokentanLon()
+                "lon": self.lentokentat[i].getLentokentanLon(),
+                "etaisyys": self.getEtaisyys(self.lentokentat[i].getIdent())
             }
             paikat.append(lkentta)
         return paikat
@@ -112,14 +113,14 @@ class Peli():
         '''Valloita(nykySijainti)'''
         return
 
-    def Matkat(self):
+    '''def Matkat(self):
         matkat = "Valitse matka kirjoittamalla lentokentän icao-koodi:\n"
         tyhja = True
         polttoAine = float(self.pelaaja.GetPolttoAine())
         for i in range(len(self.lentokentat)):
             valiVaihe = self.lentokentat[i]
             etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()).getLentokentanKoordinaatit(), valiVaihe.getLentokentanKoordinaatit()).km
-            '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km'''
+            etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km
             if valiVaihe != self.pelaaja.GetSijainti():
                 if etaisyys <= float(polttoAine) and valiVaihe.onkoValloitettu() == False:
                     tyhja = False
@@ -132,10 +133,16 @@ class Peli():
             kohde = input("Matkustuskohde: ")
             self.Matkusta(kohde)
             return
-        return
+        return'''
+
+    def getEtaisyys(self, kohde):
+        if self.pelaaja.GetSijainti() != "":
+            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()),self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
+            return etaisyys
+        else:
+            return 0
 
     def Matkusta(self, kohde):
-            global nykySijainti
             polttoAine = float(self.pelaaja.GetPolttoAine())
             etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km'''
