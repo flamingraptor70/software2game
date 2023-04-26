@@ -1,6 +1,6 @@
 html {
     font-family: 'Courier New', Courier, monospaces;
-    font-weight: 300  
+    font-weight: 500 
 }
 
 body {
@@ -13,11 +13,11 @@ a {
     text-decoration: none;
     color: #683b00;
     background: #f7af5d;
-    border-radius: 7px;
+    border-radius: 100px;
     transition: none;
     display: inline-block;
     padding: 6px 12px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-bottom: 25px;
     margin-right: 5px;
     position: relative;
@@ -34,17 +34,21 @@ a:hover {
 
 main {
     text-align: center;
+    margin: auto;
+    width: 1200px; 
+    padding: 50px;
+
 }
 
 footer {
     text-align: center;
     display: block;
     background-color: black;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     overflow: hidden;
     width: 100%; 
-    margin: 0;
+    margin: 0px;
     padding: 0;
 }
 
@@ -74,11 +78,11 @@ footer {
     background-color: rgb(0, 0, 0);
     color: black;
     display: block;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     overflow: hidden;
     width: 100%; 
-    margin: 0;
+    margin: 0px;
     padding: 0;
 }
 
@@ -91,8 +95,69 @@ footer {
 }
 
 
+.container{
+    display: grid;
+    align-items: center;
+
+
+}
+
+.main_game{
+    text-align: left;
+    margin-top: 80px;
+    margin-bottom: 50px;
+}
+.main_game p{
+    font-weight: bold;
+    font-size: 23px;
+}
+
+.shop_game{
+    text-align: left;
+
+}
+.shop_game p{
+    font-weight: bold;
+    font-size: 23px;
+    
+}
+
+.map{
+    width: 400px;
+    height: 400px;
+
+}
+
 
 .social_media{
     color: #f7af5d;
     font-weight: bold;
+}
+
+
+input {
+    text-decoration: none;
+    color: #000000;
+    background: #fccfa5;
+    border-radius: 50px;
+    transition: none;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    margin-right: 5px;
+    position: relative;
+    z-index: 5;
+    border-inline-color: black;
+    border-color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 120%;
+}
+
+input:hover {
+    color: black;
+    border-color: whitesmoke;
+
 }

@@ -19,7 +19,6 @@
     </div>
     <div class="buttons">
         <a class="buttons" href="./index.html">Home</a>
-        <a class="buttons" href="./shop.html">Shop</a>
         <a class="buttons" href="./about.html">About</a>
     </div>
 </nav>
@@ -28,7 +27,46 @@
 <main>
     <h1>Main page</h1>
     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, dolorem suscipit quis quisquam fuga maxime expedita enim laborum error qui molestias at labore nisi aliquam numquam architecto, in velit. Non?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, quaerat fugiat. Fuga deserunt quod natus. Molestias earum unde magni neque quidem nihil incidunt nobis, nisi dolorum ad ab temporibus iure!</p>
+
+<div class = "container">
+
+    <div class= "main_game">
+    <form id="nameForm">
+        <p>Syötä pelaajanimi: </p>
+        <input name="nimi" type="text">
+        <input type="submit" value="submit">
+    </form>
+
+    <form id="aPForm">
+        <p>Syötä aloituspaikka("ICAO-koodi"): </p>
+        <input name="aPaikka" type="text">
+        <input type="submit" value="submit">
+    </form>
+    </div>
+    
+    <div class="shop_game">
+    <form id="ostaPAineForm">
+        <p>Syötä paljonko polttoainetta ostat: </p>
+        <input name="pAineMaara" type="text">
+        <input type="submit" value="submit">
+    </form>
+    
+    <form id="ostaSotilaitaForm">
+        <p>Syötä paljonko sotilaita ostat: </p>
+        <input class = "game_button" name="sotilasMaara" type="text">
+        <input class = "game_button" type="submit" value="submit">
+    </form>
+    </div>
+
+    <div id="mapContainer" style="height: 400px; width: 100%">
+            <div id="map" style="height: 100%; width: 100%">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    </div>
+
+</div>
+
+<p></p>
+
 </main>
 
 <footer>
