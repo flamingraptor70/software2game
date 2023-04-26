@@ -12,17 +12,11 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
 }).addTo(map);
 map.setView([60, 24], 7);
 const markers = L.featureGroup().addTo(map)
-const marker = L.marker([80, 60]).addTo(map);
-markers.addLayer(marker)
-marker.addEventListener("click", function(){
-  console.log("Klikattu")
-})
 
 const nForm = document.getElementById("nameForm");
 const aloitusPaikkaForm = document.getElementById("aPForm");
 const pAineForm = document.getElementById("ostaPAineForm");
 const sotilasForm = document.getElementById("ostaSotilaitaForm");
-const paikatDiv = document.getElementById("paikatDiv");
 
 async function newGame(evt) {
   evt.preventDefault();
@@ -30,10 +24,10 @@ async function newGame(evt) {
   const response = await fetch("http://127.0.0.1:5000/newGame/" + nimi);
   const jsonData = await response.json();
   console.log(jsonData);
-  tulostaPaikat(jsonData);
+  paikatKarttaan(jsonData);
 }
 
-function tulostaPaikat(jsonData) {
+/*function tulostaPaikat(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
       const article = document.createElement("article");
       const header = document.createElement("h2");
@@ -50,6 +44,22 @@ function tulostaPaikat(jsonData) {
       article.appendChild(p);
 
     paikatDiv.appendChild(article);
+  }
+}*/
+
+async function lkenttaTiedot(lKentta) {
+  console.log("Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao);
+  return "Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao;
+}
+
+function paikatKarttaan(jsonData) {
+  for(let i = 0; i < jsonData.length; i++) {
+    const lat = jsonData[i].lat;
+    const lon = jsonData[i].lon;
+    console.log(jsonData[i].lat + ", " + jsonData[i].lon)
+    const marker = L.marker([lat, lon]).addTo(map);
+    marker.addEventListener("click", () => {lkenttaTiedot(jsonData[i])});
+    markers.addLayer(marker);
   }
 }
 

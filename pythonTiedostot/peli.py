@@ -41,7 +41,8 @@ class Peli():
                 "nimi": self.lentokentat[i].getLentokentanNimi(),
                 "sotilaat": self.lentokentat[i].getLentokentanSotilaat(),
                 "valloitettu": self.lentokentat[i].onkoValloitettu(),
-                "koordinaatit": self.lentokentat[i].getLentokentanKoordinaatit()
+                "lat": self.lentokentat[i].getLentokentanLat(),
+                "lon": self.lentokentat[i].getLentokentanLon()
             }
             paikat.append(lkentta)
         return paikat

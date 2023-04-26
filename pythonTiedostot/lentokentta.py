@@ -12,7 +12,8 @@ class Lentokentta():
         tulos = kursori.fetchall()
         for rivi in tulos:
             self.nimi = rivi[0]
-            self.koordinaatit = str(rivi[1]) + ", " + str(rivi[2])
+            self.lat = rivi[1]
+            self.lon = rivi[2]
             self.maa = rivi[3]
 
     def luoSotilaat(self):
@@ -49,8 +50,11 @@ class Lentokentta():
     def getLentokentanNimi(self):
         return self.nimi
 
-    def getLentokentanKoordinaatit(self):
-        return self.koordinaatit
+    def getLentokentanLat(self):
+        return self.lat
+
+    def getLentokentanLon(self):
+        return self.lon
 
     def onkoValloitettu(self):
         return self.valloitettu
@@ -68,6 +72,3 @@ class Lentokentta():
 
     def getLentokentanMaa(self):
         return self.maa
-
-    def returnSelf(self):
-        return self
