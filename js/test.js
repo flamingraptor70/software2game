@@ -1,5 +1,8 @@
 'use strict'
 
+const sw = L.latLng(-90, -180), ne = L.latLng(90, 180);
+const bounds = L.latLngBounds(sw, ne);
+
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
   noWrap: true,
@@ -7,11 +10,14 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
     [-90, -180],
     [90, 180]
   ],
+  minZoom: 4,
   maxZoom: 20,
   subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+  maxBoundsViscosity: 1.0,
 }).addTo(map);
 map.setView([60, 24], 7);
-const markers = L.featureGroup().addTo(map)
+const markers = L.featureGroup().addTo(map);
+map.setMaxBounds(bounds);
 
 const nForm = document.getElementById("nameForm");
 const aloitusPaikkaForm = document.getElementById("aPForm");
