@@ -33,27 +33,11 @@ async function newGame(evt) {
   paikatKarttaan(jsonData);
 }
 
-/*function tulostaPaikat(jsonData) {
-  for(let i = 0; i < jsonData.length; i++) {
-      const article = document.createElement("article");
-      const header = document.createElement("h2");
-      const hText = document.createTextNode(jsonData[i].nimi);
-      header.appendChild(hText)
-      const maaText = document.createTextNode("Maa: " + jsonData[i].maa + " ");
-      const icao = document.createTextNode("Icao: " + jsonData[i].icao);
+async function getPelaajanArvot() {
+  const response = await fetch("http://127.0.0.1:5000/pelaajaTiedot");
+  return await response.json();
+}
 
-      const p = document.createElement("p");
-      p.appendChild(maaText);
-      p.appendChild(icao);
-
-      article.appendChild(header);
-      article.appendChild(p);
-
-    paikatDiv.appendChild(article);
-  }
-}*/
-
-const lkenttaDialog = document.getElementById("lKenttaTiedot");
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
     const lat = jsonData[i].lat;
@@ -66,7 +50,8 @@ function paikatKarttaan(jsonData) {
 }
 
 function lKenttaPopup(lKentta, marker) {
-  if(aValittu === true) {
+  if(aValittu === true && getPelaajanArvot().sijainti !== lKentta.icao) {
+    console.log("Ei tänne")
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupButton = document.createElement("button");
@@ -78,12 +63,24 @@ function lKenttaPopup(lKentta, marker) {
     popup.appendChild(popupButton);
 
     marker.bindPopup(popup);
+  } else if(aValittu === true && getPelaajanArvot().sijainti === lKentta.icao) {
+    console.log("tänne")
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupText = document.createElement("p");
+    popupText.appendChild(document.createTextNode("Olet täällä"));
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupText);
+
+    marker.bindPopup(popup);
   } else {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupButton = document.createElement("button");
     popupButton.appendChild(document.createTextNode("Valitse aloituspaikka"))
-    popupButton.addEventListener("click", () => {aloitus(lKentta.icao)})
+    popupButton.addEventListener("click", () => {aloitus(marker, lKentta)})
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
@@ -93,14 +90,16 @@ function lKenttaPopup(lKentta, marker) {
   }
 }
 
-async function aloitus(icao) {
-  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + icao);
+async function aloitus(marker, lKentta) {
+  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + lKentta.icao);
   const jsonData = await response.json();
   console.log(jsonData);
-  aValittu = true
+  aValittu = true;
+
+  lKenttaPopup(lKentta, marker);
 }
 
-function matkusta(icao) {
+async function matkusta(icao) {
 
 }
 

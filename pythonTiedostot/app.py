@@ -26,6 +26,10 @@ def vAloitus(icao):
 def paikat():
     return peli.getPaikat()
 
+@app.route("/pelaajaTiedot")
+def pelaajaTiedot():
+    return peli.pelaajaTiedot()
+
 @app.route("/ostaPAine/<maara>")
 def ostaPAine(maara):
     maara = float(maara)
