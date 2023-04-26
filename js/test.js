@@ -13,7 +13,6 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
   minZoom: 4,
   maxZoom: 20,
   subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-  maxBoundsViscosity: 1.0,
 }).addTo(map);
 map.setView([60, 24], 7);
 const markers = L.featureGroup().addTo(map);
@@ -53,20 +52,34 @@ async function newGame(evt) {
   }
 }*/
 
-async function lkenttaTiedot(lKentta) {
-  console.log("Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao);
-  return "Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao;
-}
-
+const lkenttaDialog = document.getElementById("lKenttaTiedot");
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
     const lat = jsonData[i].lat;
     const lon = jsonData[i].lon;
     console.log(jsonData[i].lat + ", " + jsonData[i].lon)
     const marker = L.marker([lat, lon]).addTo(map);
-    marker.addEventListener("click", () => {lkenttaTiedot(jsonData[i])});
+    marker.addEventListener("click", () => {openModal(jsonData[i], lkenttaDialog)});
     markers.addLayer(marker);
   }
+}
+
+/*function lkenttaTiedot(lKentta) {
+  console.log("Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao);
+  return "Nimi: " + lKentta.nimi + ", icao: " + lKentta.icao;
+}*/
+
+function openModal(lKentta, dialog) {
+  dialog.getElementsByTagName("h2")[0].innerHTML = ""
+  dialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode(lKentta.nimi));
+  //dialog.getElementsByTagName("button")[0].addEventListener();
+  dialog.showModal();
+  const span = dialog.getElementsByTagName("span")[0];
+  span.addEventListener("click", () => {closeModal(dialog)});
+}
+
+function closeModal(dialog) {
+  dialog.close();
 }
 
 async function aloitusPaikka(evt) {

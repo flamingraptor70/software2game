@@ -23,7 +23,7 @@ class Peli():
 
         if kursori.rowcount > 0:
             for rivi in tulos:
-                sql2 = "SELECT ident FROM airport WHERE iso_country = '" + rivi[0] + "' ORDER BY RAND() LIMIT 1"
+                sql2 = "SELECT ident FROM airport WHERE iso_country = '" + rivi[0] + "' and continent = 'EU' ORDER BY RAND() LIMIT 1"
                 kursori.execute(sql2)
                 tulos2 = kursori.fetchall()
                 if kursori.rowcount > 0:
