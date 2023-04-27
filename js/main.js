@@ -40,12 +40,16 @@ async function getPelaajanSijainti() {
   return result.sijainti;
 }
 
-async function getEtaisyys(icao) {
+async function lKenttaTiedot(icao) {
   const response = await fetch("http://127.0.0.1:5000/getPaikka/" + icao);
   const jsonData = response.json();
   console.log(jsonData)
   const vastaus = jsonData.then(function(result) {
-    return result.etaisyys
+    const tiedot = {
+      etaisyys: result.etaisyys,
+      valloitettu: result.valloitettu
+    }
+    return tiedot
   })
   return vastaus
 }
@@ -75,14 +79,14 @@ async function lKenttaPopup(lKentta, marker) {
     marker.bindPopup(popup);
 
   } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao && lKentta.valloitettu === false) {
-    const etaisyys = await getEtaisyys(lKentta.icao);
+    const etaisyys = (await lKenttaTiedot(lKentta.icao)).etaisyys;
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const etaisyysText = document.createElement("p");
     etaisyysText.appendChild(document.createTextNode("Etäisyys: " + etaisyys));
     const popupButton = document.createElement("button");
     popupButton.appendChild(document.createTextNode("Matkusta"))
-    //popupButton.addEventListener("click", () => {matkusta(lKentta.icao)})
+    popupButton.addEventListener("click", () => {matkusta(marker, lKentta)})
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
@@ -90,7 +94,8 @@ async function lKenttaPopup(lKentta, marker) {
     popup.appendChild(popupButton);
 
     marker.bindPopup(popup);
-  } else if(await getPelaajanSijainti() !== lKentta.icao && lKentta.valloitettu === true) {
+  } else if(await getPelaajanSijainti() !== lKentta.icao && (await lKenttaTiedot(
+      lKentta.icao)).valloitettu === true) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupText = document.createElement("p");
@@ -125,8 +130,12 @@ async function aloitus(marker, lKentta) {
   lKenttaPopup(lKentta, marker);
 }
 
-async function matkusta(icao) {
+async function matkusta(marker, lKentta) {
+  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + lKentta.icao);
+  const jsonData = await response.json();
+  console.log(jsonData);
 
+  lKenttaPopup(lKentta, marker);
 }
 
 async function aloitusPaikka(evt) {
