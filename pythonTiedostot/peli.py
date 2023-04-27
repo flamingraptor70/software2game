@@ -99,11 +99,8 @@ class Peli():
                     return False
                 if viholliset <= 0:
                     viholliset = 0
-                    '''SetLentokentanSotilaat(ident, viholliset)'''
                     lKentta.setLentokentanSotilaat(viholliset)
                     if omat > 0:
-                        print("Voitit taistelun.")
-                        '''SetSotilaat(omat)'''
                         self.pelaaja.SetSotilaat(omat)
                         return True
         else:
