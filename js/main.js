@@ -33,11 +33,11 @@ async function newGame(evt) {
   paikatKarttaan(jsonData);
 }
 
-async function getPelaajanArvot() {
+async function getPelaajanSijainti() {
   const response = await fetch("http://127.0.0.1:5000/pelaajaTiedot");
   const result = await response.json()
-  console.log(result)
-  return result;
+  console.log("getPelaajanArvot: " + result.sijainti)
+  return result.sijainti;
 }
 
 function paikatKarttaan(jsonData) {
@@ -51,8 +51,22 @@ function paikatKarttaan(jsonData) {
   }
 }
 
-function lKenttaPopup(lKentta, marker) {
-  if(aValittu === true && getPelaajanArvot().sijainti !== lKentta.icao) {
+async function lKenttaPopup(lKentta, marker) {
+  console.log("Pelaajan sijainti: " + await getPelaajanSijainti() + ", lentokentän icao: " + lKentta.icao)
+  if(aValittu === true && await getPelaajanSijainti() === lKentta.icao) {
+    console.log("tänne")
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupText = document.createElement("p");
+    popupText.appendChild(document.createTextNode("Olet täällä"));
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupText);
+
+    marker.bindPopup(popup);
+
+  } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao) {
     console.log("Ei tänne")
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
@@ -63,18 +77,6 @@ function lKenttaPopup(lKentta, marker) {
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
     popup.appendChild(popupButton);
-
-    marker.bindPopup(popup);
-  } else if(aValittu === true && getPelaajanArvot().sijainti === lKentta.icao) {
-    console.log("tänne")
-    const popup = document.createElement("article");
-    const popupHeader = document.createElement("h2");
-    const popupText = document.createElement("p");
-    popupText.appendChild(document.createTextNode("Olet täällä"));
-
-    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
-    popup.appendChild(popupHeader);
-    popup.appendChild(popupText);
 
     marker.bindPopup(popup);
   } else {
