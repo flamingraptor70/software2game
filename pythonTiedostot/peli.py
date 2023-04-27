@@ -57,7 +57,7 @@ class Peli():
             "valloitettu": self.oikeaLentokentta(icao).onkoValloitettu(),
             "lat": self.oikeaLentokentta(icao).getLentokentanLat(),
             "lon": self.oikeaLentokentta(icao).getLentokentanLon(),
-            "etaisyys": self.getEtaisyys(self.oikeaLentokentta(icao).getIdent())
+            "etaisyys": self.getEtaisyys(icao)
         }
         return lkentta
 
@@ -155,7 +155,7 @@ class Peli():
     def getEtaisyys(self, kohde):
         if self.pelaaja.GetSijainti() != "":
             etaisyys = geodesic(self.getLentokentanKoordinaatit(self.pelaaja.GetSijainti()), self.getLentokentanKoordinaatit(kohde)).km
-            print("Etäisyys: " + etaisyys)
+            print("Etäisyys: " + str(etaisyys))
             return etaisyys
         else:
             return 0

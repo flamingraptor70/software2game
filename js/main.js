@@ -43,7 +43,11 @@ async function getPelaajanSijainti() {
 async function getEtaisyys(icao) {
   const response = await fetch("http://127.0.0.1:5000/getPaikka/" + icao);
   const jsonData = response.json();
-  return jsonData.etaisyys;
+  console.log(jsonData)
+  const vastaus = jsonData.then(function(result) {
+    return result.etaisyys
+  })
+  return vastaus
 }
 
 function paikatKarttaan(jsonData) {
