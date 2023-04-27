@@ -161,16 +161,14 @@ class Peli():
             return 0
 
     def Matkusta(self, kohde):
-            polttoAine = float(self.pelaaja.GetPolttoAine())
-            etaisyys = self.getEtaisyys(kohde)
-            if etaisyys <= polttoAine and self.oikeaLentokentta(kohde).onkoValloitettu() == False:
-                '''if self.Taistelu(kohde):'''
-                polttoAine -= etaisyys
-                self.pelaaja.SetSijainti(kohde)
-                self.pelaaja.SetPolttoAine(polttoAine)
-                self.oikeaLentokentta(kohde).Valloita(kohde)
-                '''self.MatemaattinenOngelma()'''
-                return
+        polttoAine = float(self.pelaaja.GetPolttoAine())
+        etaisyys = self.getEtaisyys(kohde)
+        '''if self.Taistelu(kohde):'''
+        polttoAine -= etaisyys
+        self.pelaaja.SetSijainti(kohde)
+        self.pelaaja.SetPolttoAine(polttoAine)
+        self.oikeaLentokentta(kohde).Valloita()
+        '''self.MatemaattinenOngelma()'''
 
     def MatemaattinenOngelma(self):
         sql = "SELECT Questions_text, Answer FROM Questions ORDER BY RAND() LIMIT 1"

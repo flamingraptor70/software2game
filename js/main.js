@@ -131,7 +131,7 @@ async function aloitus(marker, lKentta) {
 }
 
 async function matkusta(marker, lKentta) {
-  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + lKentta.icao);
+  const response = await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
   const jsonData = await response.json();
   console.log(jsonData);
 

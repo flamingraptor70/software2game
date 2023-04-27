@@ -28,8 +28,15 @@ def getPaikka(icao):
 
 @app.route("/matkusta/<icao>")
 def matkusta(icao):
-    peli.Matkusta(icao)
-    return peli.pelaajaTiedot()
+    etaisyys = peli.getEtaisyys(icao)
+    if etaisyys <= peli.pelaajaTiedot().get("pAine") and peli.oikeaLentokentta(icao).onkoValloitettu() == False:
+        peli.Matkusta(icao)
+        return peli.pelaajaTiedot()
+    else:
+        vastaus = {
+            "vastaus": "Ei riitä polttoaine"
+        }
+        return vastaus
 
 @app.route("/pelaajaTiedot")
 def pelaajaTiedot():
