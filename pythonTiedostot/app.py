@@ -22,9 +22,9 @@ def vAloitus(icao):
     peli.ValitseAloitus(icao)
     return peli.pelaajaTiedot()
 
-@app.route("/paikat")
-def paikat():
-    return peli.getPaikat()
+@app.route("/getPaikka/<icao>")
+def getPaikka(icao):
+    return peli.getPaikka(icao)
 
 @app.route("/pelaajaTiedot")
 def pelaajaTiedot():

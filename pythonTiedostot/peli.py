@@ -48,6 +48,19 @@ class Peli():
             paikat.append(lkentta)
         return paikat
 
+    def getPaikka(self, icao):
+        lkentta = {
+            "icao": self.oikeaLentokentta(icao).getIdent(),
+            "maa": self.oikeaLentokentta(icao).getLentokentanMaa(),
+            "nimi": self.oikeaLentokentta(icao).getLentokentanNimi(),
+            "sotilaat": self.oikeaLentokentta(icao).getLentokentanSotilaat(),
+            "valloitettu": self.oikeaLentokentta(icao).onkoValloitettu(),
+            "lat": self.oikeaLentokentta(icao).getLentokentanLat(),
+            "lon": self.oikeaLentokentta(icao).getLentokentanLon(),
+            "etaisyys": self.getEtaisyys(self.oikeaLentokentta(icao).getIdent())
+        }
+        return lkentta
+
     def oikeaLentokentta(self, ident):
         for i in range(len(self.lentokentat)):
             if self.lentokentat[i].getIdent() == ident:
@@ -135,16 +148,22 @@ class Peli():
             return
         return'''
 
+    def getLentokentanKoordinaatit(self, icao):
+        print("Lentokentän koordinaatit: " + str(self.oikeaLentokentta(icao).getLentokentanLat()) + ", " + str(self.oikeaLentokentta(icao).getLentokentanLon()))
+        etaisyys = str(self.oikeaLentokentta(icao).getLentokentanLat()) + ", " + str(self.oikeaLentokentta(icao).getLentokentanLon())
+        return etaisyys
     def getEtaisyys(self, kohde):
         if self.pelaaja.GetSijainti() != "":
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()),self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
+            etaisyys = geodesic(self.getLentokentanKoordinaatit(self.pelaaja.GetSijainti()), self.getLentokentanKoordinaatit(kohde)).km
+            print("Etäisyys: " + etaisyys)
             return etaisyys
         else:
             return 0
 
     def Matkusta(self, kohde):
             polttoAine = float(self.pelaaja.GetPolttoAine())
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti().getLentokentanKoordinaatit()), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
+            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()).getLentokentanKoordinaatit(), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
+            print(etaisyys)
             '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km'''
             if etaisyys <= polttoAine and self.oikeaLentokentta(kohde).onkoValloitettu() == False:
                 if self.Taistelu(kohde):
@@ -153,8 +172,6 @@ class Peli():
                     self.pelaaja.SetPolttoAine(polttoAine)
                     self.oikeaLentokentta(kohde).Valloita(nykySijainti)
                     self.MatemaattinenOngelma()
-            else:
-                return print("Epäkelpo vastaus.")
             return
 
     def MatemaattinenOngelma(self):

@@ -40,6 +40,12 @@ async function getPelaajanSijainti() {
   return result.sijainti;
 }
 
+async function getEtaisyys(icao) {
+  const response = await fetch("http://127.0.0.1:5000/getPaikka/" + icao);
+  const jsonData = response.json();
+  return jsonData.etaisyys;
+}
+
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
     const lat = jsonData[i].lat;
@@ -54,7 +60,6 @@ function paikatKarttaan(jsonData) {
 async function lKenttaPopup(lKentta, marker) {
   console.log("Pelaajan sijainti: " + await getPelaajanSijainti() + ", lentokentän icao: " + lKentta.icao)
   if(aValittu === true && await getPelaajanSijainti() === lKentta.icao) {
-    console.log("tänne")
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupText = document.createElement("p");
@@ -67,15 +72,19 @@ async function lKenttaPopup(lKentta, marker) {
     marker.bindPopup(popup);
 
   } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao) {
-    console.log("Ei tänne")
+    const etaisyys = await getEtaisyys(lKentta.icao);
+    console.log("Etäisyys: " + etaisyys)
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
+    const etaisyysText = document.createElement("p");
+    etaisyysText.appendChild(document.createTextNode("Etäisyys: " + etaisyys));
     const popupButton = document.createElement("button");
     popupButton.appendChild(document.createTextNode("Matkusta"))
     //popupButton.addEventListener("click", () => {matkusta(lKentta.icao)})
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
+    popup.appendChild(etaisyysText);
     popup.appendChild(popupButton);
 
     marker.bindPopup(popup);
