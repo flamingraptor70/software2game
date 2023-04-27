@@ -62,7 +62,6 @@ function paikatKarttaan(jsonData) {
 }
 
 async function lKenttaPopup(lKentta, marker) {
-  console.log("Pelaajan sijainti: " + await getPelaajanSijainti() + ", lentokentän icao: " + lKentta.icao)
   if(aValittu === true && await getPelaajanSijainti() === lKentta.icao) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
@@ -75,9 +74,8 @@ async function lKenttaPopup(lKentta, marker) {
 
     marker.bindPopup(popup);
 
-  } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao) {
+  } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao && lKentta.valloitettu === false) {
     const etaisyys = await getEtaisyys(lKentta.icao);
-    console.log("Etäisyys: " + etaisyys)
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const etaisyysText = document.createElement("p");
@@ -90,6 +88,17 @@ async function lKenttaPopup(lKentta, marker) {
     popup.appendChild(popupHeader);
     popup.appendChild(etaisyysText);
     popup.appendChild(popupButton);
+
+    marker.bindPopup(popup);
+  } else if(await getPelaajanSijainti() !== lKentta.icao && lKentta.valloitettu === true) {
+    const popup = document.createElement("article");
+    const popupHeader = document.createElement("h2");
+    const popupText = document.createElement("p");
+    popupText.appendChild(document.createTextNode("Valloitettu"));
+
+    popupHeader.appendChild(document.createTextNode(lKentta.nimi));
+    popup.appendChild(popupHeader);
+    popup.appendChild(popupText);
 
     marker.bindPopup(popup);
   } else {
@@ -155,6 +164,5 @@ async function ostaSotilaita(evt) {
 }
 
 nForm.addEventListener("submit", newGame);
-aloitusPaikkaForm.addEventListener("submit", aloitusPaikka);
 pAineForm.addEventListener("submit", ostaPolttoAine);
 sotilasForm.addEventListener("submit", ostaSotilaita);

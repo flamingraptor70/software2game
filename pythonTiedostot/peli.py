@@ -155,23 +155,21 @@ class Peli():
     def getEtaisyys(self, kohde):
         if self.pelaaja.GetSijainti() != "":
             etaisyys = geodesic(self.getLentokentanKoordinaatit(self.pelaaja.GetSijainti()), self.getLentokentanKoordinaatit(kohde)).km
-            print("Etäisyys: " + str(etaisyys))
+            etaisyys = round(etaisyys, 2)
             return etaisyys
         else:
             return 0
 
     def Matkusta(self, kohde):
             polttoAine = float(self.pelaaja.GetPolttoAine())
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()).getLentokentanKoordinaatit(), self.oikeaLentokentta(kohde).getLentokentanKoordinaatit()).km
-            print(etaisyys)
-            '''etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(kohde)).km'''
+            etaisyys = self.getEtaisyys(kohde)
             if etaisyys <= polttoAine and self.oikeaLentokentta(kohde).onkoValloitettu() == False:
                 if self.Taistelu(kohde):
                     polttoAine -= etaisyys
-                    nykySijainti = kohde
+                    self.pelaaja.SetSijainti(kohde)
                     self.pelaaja.SetPolttoAine(polttoAine)
                     self.oikeaLentokentta(kohde).Valloita(nykySijainti)
-                    self.MatemaattinenOngelma()
+                    '''self.MatemaattinenOngelma()'''
             return
 
     def MatemaattinenOngelma(self):

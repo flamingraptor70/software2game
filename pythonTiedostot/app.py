@@ -26,6 +26,10 @@ def vAloitus(icao):
 def getPaikka(icao):
     return peli.getPaikka(icao)
 
+@app.route("/matkusta/<icao>")
+def matkusta(icao):
+    peli.Matkusta(icao)
+
 @app.route("/pelaajaTiedot")
 def pelaajaTiedot():
     return peli.pelaajaTiedot()
