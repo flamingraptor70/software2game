@@ -3,6 +3,7 @@
 const sw = L.latLng(-90, -180), ne = L.latLng(90, 180);
 const bounds = L.latLngBounds(sw, ne);
 let aValittu = false;
+const lataaja = document.getElementById("lataus");
 
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
@@ -26,9 +27,11 @@ const sotilasForm = document.getElementById("ostaSotilaitaForm");
 
 async function newGame(evt) {
   evt.preventDefault();
+  lataaja.style.display = "block";
   const nimi =document.querySelector("input[name=nimi]").value;
   const response = await fetch("http://127.0.0.1:5000/newGame/" + nimi);
   const jsonData = await response.json();
+  lataaja.style.display = "none";
   console.log(jsonData);
   paikatKarttaan(jsonData);
 }
@@ -125,18 +128,22 @@ async function lKenttaPopup(lKentta, marker) {
 }
 
 async function aloitus(marker, lKentta) {
+  lataaja.style.display = "block";
   const response = await fetch("http://127.0.0.1:5000/vAloitus/" + lKentta.icao);
   const jsonData = await response.json();
   console.log(jsonData);
   aValittu = true;
+  lataaja.style.display = "none";
 
   lKenttaPopup(lKentta, marker);
 }
 
 async function matkusta(marker, lKentta) {
+  lataaja.style.display = "block";
   const response = await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
   const jsonData = await response.json();
   console.log(jsonData);
+  lataaja.style.display = "none";
 
   lKenttaPopup(lKentta, marker);
 }
