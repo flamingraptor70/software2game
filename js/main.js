@@ -138,14 +138,6 @@ async function matkusta(marker, lKentta) {
   lKenttaPopup(lKentta, marker);
 }
 
-async function aloitusPaikka(evt) {
-  evt.preventDefault();
-  const aPaikka =document.querySelector("input[name=aPaikka]").value;
-  const response = await fetch("http://127.0.0.1:5000/vAloitus/" + aPaikka);
-  const jsonData = await response.json();
-  console.log(jsonData);
-}
-
 function osto(jsonData) {
   if("vastaus" in jsonData) {
     console.log("ei onnistunut");
