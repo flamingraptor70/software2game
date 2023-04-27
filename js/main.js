@@ -35,7 +35,9 @@ async function newGame(evt) {
 
 async function getPelaajanArvot() {
   const response = await fetch("http://127.0.0.1:5000/pelaajaTiedot");
-  return await response.json();
+  const result = await response.json()
+  console.log(result)
+  return result;
 }
 
 function paikatKarttaan(jsonData) {
