@@ -78,7 +78,9 @@ async function lKenttaPopup(lKentta, marker) {
 
     marker.bindPopup(popup);
 
-  } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao && lKentta.valloitettu === false) {
+  } else if(aValittu === true && await getPelaajanSijainti() !== lKentta.icao && (await lKenttaTiedot(
+      lKentta.icao)).valloitettu === false) {
+    console.log("Täällä matkustamassa")
     const etaisyys = (await lKenttaTiedot(lKentta.icao)).etaisyys;
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
@@ -106,7 +108,8 @@ async function lKenttaPopup(lKentta, marker) {
     popup.appendChild(popupText);
 
     marker.bindPopup(popup);
-  } else {
+  } else if(aValittu === false) {
+    console.log("Täällä valitsemassa aloituspaikkaa")
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupButton = document.createElement("button");
@@ -139,7 +142,7 @@ async function matkusta(marker, lKentta) {
 }
 
 function osto(jsonData) {
-  if("vastaus" in jsonData) {
+  if("vastaus" in jsonData) {x
     console.log("ei onnistunut");
   } else {
     console.log("onnistui");

@@ -20,6 +20,7 @@ def newGame(pNimi):
 @app.route("/vAloitus/<icao>")
 def vAloitus(icao):
     peli.ValitseAloitus(icao)
+    peli.luoSotilaatLentokentille()
     return peli.pelaajaTiedot()
 
 @app.route("/getPaikka/<icao>")
