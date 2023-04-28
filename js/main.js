@@ -76,10 +76,14 @@ async function lKenttaPopup(lKentta, marker) {
 
   } else if(aValittu === true && pelaaja.sijainti !== lKentta.icao && (await lKenttaTiedot(
       lKentta.icao)).valloitettu === false) {
-    const etaisyys = (await lKenttaTiedot(lKentta.icao)).etaisyys;
+    lKentta = await lKenttaTiedot(lKentta.icao);
+    const etaisyys = lKentta.etaisyys;
+    const sotilaat = lKentta.sotilaat;
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const etaisyysText = document.createElement("p");
+    const sotilasText = document.createElement("p");
+    sotilasText.appendChild(document.createTextNode("Lentokentän sotilaat: " + sotilaat));
     etaisyysText.appendChild(document.createTextNode("Etäisyys: " + etaisyys));
     const popupButton = document.createElement("button");
     popupButton.appendChild(document.createTextNode("Matkusta"));
@@ -87,6 +91,7 @@ async function lKenttaPopup(lKentta, marker) {
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
+    popup.appendChild(sotilasText);
     popup.appendChild(etaisyysText);
     popup.appendChild(popupButton);
 
