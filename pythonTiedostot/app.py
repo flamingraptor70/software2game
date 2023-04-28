@@ -1,8 +1,7 @@
 import json
 import os
 
-import mysql.connector
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
 from peli import Peli
 

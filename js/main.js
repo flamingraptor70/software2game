@@ -5,6 +5,7 @@ const bounds = L.latLngBounds(sw, ne);
 let aValittu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
+const lKentat = []
 
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
@@ -48,6 +49,7 @@ async function lKenttaTiedot(icao) {
 
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
+    lKentat.push(jsonData[i].icao);
     const lat = jsonData[i].lat;
     const lon = jsonData[i].lon;
     console.log(jsonData[i].lat + ", " + jsonData[i].lon)
@@ -135,12 +137,22 @@ async function matkusta(marker, lKentta) {
 
     lKenttaPopup(lKentta, marker);
   } else {
-
+    console.log("Ei onnistunut valloittaminen.")
   }
 }
 
 async function taistelu(lKentta) {
 
+}
+
+async function voittoTarkistus(icao) {
+  let voitto = true;
+  for(let i = 0; i < lKentta.length; i++){
+    if(lKenttaTiedot(icao).valloitettu === false) {
+      voitto = false
+    }
+  }
+  return voitto
 }
 
 function osto(jsonData) {
