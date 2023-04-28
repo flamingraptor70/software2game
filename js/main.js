@@ -5,6 +5,7 @@ const bounds = L.latLngBounds(sw, ne);
 let aValittu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
+const havioDialog = document.getElementById("havioDialog");
 const lKentat = []
 
 const map = L.map('map', { tap: false });
@@ -60,7 +61,8 @@ function paikatKarttaan(jsonData) {
 }
 
 async function lKenttaPopup(lKentta, marker) {
-  if(aValittu === true && await getPelaajanTiedot().sijainti === lKentta.icao) {
+  const pelaaja = await getPelaajanTiedot();
+  if(aValittu === true && pelaaja.sijainti === lKentta.icao) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupText = document.createElement("p");
@@ -72,7 +74,7 @@ async function lKenttaPopup(lKentta, marker) {
 
     marker.bindPopup(popup);
 
-  } else if(aValittu === true && await getPelaajanTiedot().sijainti !== lKentta.icao && (await lKenttaTiedot(
+  } else if(aValittu === true && pelaaja.sijainti !== lKentta.icao && (await lKenttaTiedot(
       lKentta.icao)).valloitettu === false) {
     const etaisyys = (await lKenttaTiedot(lKentta.icao)).etaisyys;
     const popup = document.createElement("article");
@@ -89,7 +91,7 @@ async function lKenttaPopup(lKentta, marker) {
     popup.appendChild(popupButton);
 
     marker.bindPopup(popup);
-  } else if(await getPelaajanTiedot().sijainti !== lKentta.icao && (await lKenttaTiedot(
+  } else if(pelaaja.sijainti !== lKentta.icao && (await lKenttaTiedot(
       lKentta.icao)).valloitettu === true) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
@@ -150,8 +152,9 @@ async function taistelu(lKentta) {
 
 async function voittoTarkistus() {
   let voitto = true;
-  for(let i = 0; i < lKentta.length; i++){
-    if(await lKenttaTiedot(lKentta[i]).valloitettu === false) {
+  for(let i = 0; i < lKentat.length; i++){
+    const lKentta = await lKenttaTiedot(lKentat[i]);
+    if(lKentta.valloitettu === false) {
       voitto = false
     }
   }
@@ -168,9 +171,9 @@ async function havinnytTarkistus() {
 
   for(let i = 0; i < lKentat.length; i++) {
     const lKentta = await lKenttaTiedot(lKentat[i]);
-    if(lKentta.ident !== sijainti && lKentta.valloitettu === false) {
+    if(lKentta.ident !== pelaaja.sijainti && lKentta.valloitettu === false) {
       if(lahin === "") {
-        lahin = lkentta;
+        lahin = lKentta;
       } else if(lahin.etaisyys > lKentta.etaisyys) {
         lahin = lKentta;
       }
@@ -181,7 +184,7 @@ async function havinnytTarkistus() {
 
   if(pelaaja.raha < 2 && pelaaja.sotilaat === 0) {
     console.log("Hävinnyt");
-  } else if(etaisyys > maxPolttoAine) {
+  } else if(lahin.etaisyys > maxPolttoAine) {
     console.log("Hävinnyt");
   }
 }
