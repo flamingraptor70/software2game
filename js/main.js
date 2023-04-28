@@ -125,6 +125,7 @@ async function aloitus(marker, lKentta) {
   lataaja.style.display = "none";
 
   lKenttaPopup(lKentta, marker);
+  voittoTarkistus();
 }
 
 async function matkusta(marker, lKentta) {
@@ -136,8 +137,10 @@ async function matkusta(marker, lKentta) {
     lataaja.style.display = "none";
 
     lKenttaPopup(lKentta, marker);
+    voittoTarkistus();
   } else {
     console.log("Ei onnistunut valloittaminen.")
+    voittoTarkistus();
   }
 }
 
@@ -145,14 +148,42 @@ async function taistelu(lKentta) {
 
 }
 
-async function voittoTarkistus(icao) {
+async function voittoTarkistus() {
   let voitto = true;
   for(let i = 0; i < lKentta.length; i++){
-    if(lKenttaTiedot(icao).valloitettu === false) {
+    if(await lKenttaTiedot(lKentta[i]).valloitettu === false) {
       voitto = false
     }
   }
-  return voitto
+  if(voitto === true) {
+    console.log("Peli voitettu");
+  } else {
+    havinnytTarkistus();
+  }
+}
+
+async function havinnytTarkistus() {
+  const pelaaja = await getPelaajanTiedot();
+  let lahin = "";
+
+  for(let i = 0; i < lKentat.length; i++) {
+    const lKentta = await lKenttaTiedot(lKentat[i]);
+    if(lKentta.ident !== sijainti && lKentta.valloitettu === false) {
+      if(lahin === "") {
+        lahin = lkentta;
+      } else if(lahin.etaisyys > lKentta.etaisyys) {
+        lahin = lKentta;
+      }
+    }
+  }
+
+  const maxPolttoAine = pelaaja.pAine + (pelaaja.raha * 2);
+
+  if(pelaaja.raha < 2 && pelaaja.sotilaat === 0) {
+    console.log("Hävinnyt");
+  } else if(etaisyys > maxPolttoAine) {
+    console.log("Hävinnyt");
+  }
 }
 
 function osto(jsonData) {
