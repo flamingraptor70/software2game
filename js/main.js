@@ -184,9 +184,22 @@ async function havinnytTarkistus() {
 
   if(pelaaja.raha < 2 && pelaaja.sotilaat === 0) {
     console.log("Hävinnyt");
+    havio();
   } else if(lahin.etaisyys > maxPolttoAine) {
     console.log("Hävinnyt");
+    havio();
   }
+}
+
+function havio() {
+  havioDialog.showModal();
+  havioDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
+}
+
+function uusiPeli() {
+  havioDialog.close();
+  location.reload();
+  return false;
 }
 
 function osto(jsonData) {
@@ -194,6 +207,7 @@ function osto(jsonData) {
     console.log("ei onnistunut");
   } else {
     console.log("onnistui");
+    havinnytTarkistus();
   }
 }
 
