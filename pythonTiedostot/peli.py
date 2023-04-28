@@ -1,5 +1,4 @@
 from lentokentta import Lentokentta
-from kauppa import Kauppa
 from pelaaja import Pelaaja
 from yhteys import yhteys
 import random
@@ -11,7 +10,6 @@ class Peli():
 
     def LuoPeli(self, pNimi, polttoAine, omatSotilaat, raha, score):
         self.lentokentat = []
-        self.havinnyt = False
         self.pelaaja = Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
         '''self.kauppa = Kauppa(self.pelaaja)'''
 

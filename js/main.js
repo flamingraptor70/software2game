@@ -157,7 +157,7 @@ async function matkusta(marker, lKentta) {
 }
 
 async function taistelu(lKentta) {
-
+  return true;
 }
 
 async function voittoTarkistus() {
