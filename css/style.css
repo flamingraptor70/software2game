@@ -52,12 +52,12 @@ footer {
     padding: 0;
 }
 
+
 .picture_logo {
     width: 85%;
     margin: auto;
     text-align: right;
 }
-
 .picture_logo img {
     display: block;
     margin-top: 10px;
@@ -86,25 +86,26 @@ footer {
     padding: 0;
 }
 
-
-
 .buttons {
     text-align: center;
     margin-left: 70px;
     margin-right: 70px;
 }
 
+.main_header {
+    margin-top: 0px;
+    width: 100%;
+    height: auto;
+}
 
 .container{
     display: grid;
     align-items: center;
-
-
 }
 
 .main_game{
-    text-align: left;
-    margin-top: 80px;
+    text-align: center;
+    margin-top: 20px;
     margin-bottom: 50px;
 }
 .main_game p{
@@ -112,8 +113,10 @@ footer {
     font-size: 23px;
 }
 
+
 .shop_game{
-    text-align: left;
+    float:left;
+    margin:auto;
 
 }
 .shop_game p{
@@ -162,3 +165,18 @@ input:hover {
 
 }
 
+table{
+    color: #000000;
+    background: #fccfa5;
+    border-radius: 20px;
+    border-color: black;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 80px;
+}
+
+span{
+    color: red;
+}

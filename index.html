@@ -26,38 +26,62 @@
 
 <body>
 <main>
-    <h1>Main page</h1>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, dolorem suscipit quis quisquam fuga maxime expedita enim laborum error qui molestias at labore nisi aliquam numquam architecto, in velit. Non?</p>
-
-<div class = "container">
-
-    <div class= "main_game">
-    <form id="nameForm">
-        <p>Syötä pelaajanimi: </p>
-        <input name="nimi" type="text">
-        <input type="submit" value="submit">
-    </form>
+    <h1 class="main_header">Welcome terrorist!</h1>
+<div class="container">
+    <div class="main_game">
+        <form id="nameForm">
+            <img src="img/user.png" alt="pelaajanimi">
+            <p>Create username:</p>
+            <input name="nimi" type="text">
+            <input type="submit" value="submit">
+        </form>
     
     <div class="shop_game">
-    <form id="ostaPAineForm">
-        <p>Syötä paljonko polttoainetta ostat: </p>
-        <input name="pAineMaara" type="text">
-        <input type="submit" value="submit">
-    </form>
+        <h1>Shop</h1>
+        <form id="ostaPAineForm">
+            <p>How much fuel you want to buy?: </p><img src="img/Fuel.png" alt="polttoainetta">
+            <input name="pAineMaara" type="text">
+            <input type="submit" value="submit">
+        </form>
     
-    <form id="ostaSotilaitaForm">
-        <p>Syötä paljonko sotilaita ostat: </p>
-        <input class = "game_button" name="sotilasMaara" type="text">
-        <input class = "game_button" type="submit" value="submit">
-    </form>
+        <form id="ostaSotilaitaForm">
+            <p>How much soliders you want to recruit?: </p><img src="img/Soliders.png" alt="sotilaita">
+            <input class = "game_button" name="sotilasMaara" type="text">
+            <input class = "game_button" type="submit" value="submit">
+        </form>
     </div>
-        <div id="lataus" style="display: none">Ladataan...</div>
-        <div id="mapContainer" style="height: 400px; width: 100%">
-            <div id="map" style="height: 100%; width: 100%">
+
+    <div class="statistics">
+        <h1 id="stat_status">Game Status</h1>
+        <section id="stats">
+            <table border="0">
+                <tr>
+                    <td>Player's name</td>
+                </tr>
+                <tr>
+                    <td>Balance: <span id="balance">100</span>€</td>
+                </tr>
+                <tr>
+                    <td>Fuel: <span id="fuel">50</span>L</td>
+                </tr>
+                <tr>
+                    <td>Soliders: <span id="soliders">5</span></td>
+                </tr>
+                <tr>
+                    <td>Achieved countries: <span id="countries">0</span></td>
+                </tr>
+            </table>
+        </section>
+    </div>
+</div>
+</div>
+
+<div id="lataus" style="display: none">Ladataan...</div>
+    <div id="mapContainer" style="height: 400px; width: 100%">
+        <div id="map" style="height: 100%; width: 100%">
             <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
             </div>
         </div>
-    </div>
 
     <dialog id="taisteluDialog">
         <h2>Taistelu meneillään</h2>
@@ -68,6 +92,9 @@
         <h2></h2>
         <button>Aloita uusi peli</button>
     </dialog>
+
+        <p></p>
+</main>
 
 <p></p>
 
@@ -80,8 +107,6 @@
         <a href="https://twitter.com/home"><i class="fa-brands fa-square-twitter"></i></a>
         <a href="https://discord.com/"><i class="fa-brands fa-discord"></i></a>
         <a href="https://www.linkedin.com"><i class="fa-brands fa-linkedin"></i></a>
-</footer>
-</div>
-</main>
+</footer> 
 </body>
 </html>
