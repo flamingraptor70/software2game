@@ -7,6 +7,7 @@ const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
 const loppuDialog = document.getElementById("loppuDialog");
 const lKentat = []
+let latamassaTietoja = false;
 
 const map = L.map('map', { tap: false });
 L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
@@ -28,14 +29,17 @@ const pAineForm = document.getElementById("ostaPAineForm");
 const sotilasForm = document.getElementById("ostaSotilaitaForm");
 
 async function newGame(evt) {
-  evt.preventDefault();
-  lataaja.style.display = "block";
-  const nimi =document.querySelector("input[name=nimi]").value;
-  const response = await fetch("http://127.0.0.1:5000/newGame/" + nimi);
-  const jsonData = await response.json();
-  lataaja.style.display = "none";
-  console.log(jsonData);
-  paikatKarttaan(jsonData);
+  if(!latamassaTietoja) {
+    evt.preventDefault();
+    latamassaTietoja = true;
+    lataaja.style.display = "block";
+    const nimi =document.querySelector("input[name=nimi]").value;
+    const response = await fetch("http://127.0.0.1:5000/newGame/" + nimi);
+    const jsonData = await response.json();
+    lataaja.style.display = "none";
+    console.log(jsonData);
+    paikatKarttaan(jsonData);
+  }
 }
 
 async function getPelaajanTiedot() {
@@ -58,6 +62,7 @@ function paikatKarttaan(jsonData) {
     marker.addEventListener("click", () => {lKenttaPopup(jsonData[i], marker)});
     markers.addLayer(marker);
   }
+  latamassaTietoja = false;
 }
 
 async function lKenttaPopup(lKentta, marker) {
