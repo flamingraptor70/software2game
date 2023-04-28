@@ -5,7 +5,7 @@ const bounds = L.latLngBounds(sw, ne);
 let aValittu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
-const havioDialog = document.getElementById("havioDialog");
+const loppuDialog = document.getElementById("loppuDialog");
 const lKentat = []
 
 const map = L.map('map', { tap: false });
@@ -151,15 +151,16 @@ async function taistelu(lKentta) {
 }
 
 async function voittoTarkistus() {
-  let voitto = true;
+  let voititko = true;
   for(let i = 0; i < lKentat.length; i++){
     const lKentta = await lKenttaTiedot(lKentat[i]);
     if(lKentta.valloitettu === false) {
-      voitto = false
+      voititko = false
     }
   }
-  if(voitto === true) {
+  if(voititko === true) {
     console.log("Peli voitettu");
+    voitto()
   } else {
     havinnytTarkistus();
   }
@@ -191,13 +192,20 @@ async function havinnytTarkistus() {
   }
 }
 
+function voitto() {
+  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("Voitit pelin"));
+  loppuDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
+  loppuDialog.showModal();
+}
+
 function havio() {
-  havioDialog.showModal();
-  havioDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
+  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("Hävisit pelin"));
+  loppuDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
+  loppuDialog.showModal();
 }
 
 function uusiPeli() {
-  havioDialog.close();
+  loppuDialog.close();
   location.reload();
   return false;
 }
