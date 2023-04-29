@@ -175,6 +175,13 @@ async function matkusta(marker, lKentta) {
 
     if("vastaus" in jsonData) {
       console.log(jsonData.vastaus);
+
+      const popup = document.createElement("article");
+      const popupText = document.createElement("p");
+      popupText.appendChild(document.createTextNode(jsonData.vastaus));
+      popup.appendChild(popupText);
+
+      marker.bindPopup(popup);
     } else {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
