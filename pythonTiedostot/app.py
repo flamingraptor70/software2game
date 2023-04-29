@@ -34,7 +34,7 @@ def matkusta(icao):
         return peli.pelaajaTiedot()
     else:
         vastaus = {
-            "vastaus": "Ei riitä polttoaine"
+            "vastaus": "Not enough fuel"
         }
         return vastaus
 
@@ -50,7 +50,7 @@ def ostaPAine(maara):
         return peli.pelaajaTiedot()
     else:
         vastaus = {
-            "vastaus": "Rahat eivät riitä ostokseen"
+            "vastaus": "Not enough money"
         }
         return vastaus
 
@@ -62,7 +62,7 @@ def ostaSotilaita(maara):
         return peli.pelaajaTiedot()
     else:
         vastaus = {
-            "vastaus": "Rahat eivät riitä ostokseen"
+            "vastaus": "Not enough money"
         }
         return vastaus
 

@@ -241,13 +241,13 @@ async function havinnytTarkistus() {
 }
 
 function voitto() {
-  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("Voitit pelin"));
+  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("You won"));
   loppuDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
   loppuDialog.showModal();
 }
 
 function havio() {
-  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("Hävisit pelin"));
+  loppuDialog.getElementsByTagName("h2")[0].appendChild(document.createTextNode("You lost"));
   loppuDialog.getElementsByTagName("button")[0].addEventListener("click", uusiPeli);
   loppuDialog.showModal();
 }
