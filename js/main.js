@@ -173,10 +173,14 @@ async function matkusta(marker, lKentta) {
     console.log(jsonData);
     lataaja.style.display = "none";
 
-    lKenttaPopup(lKentta, marker);
-    paivitaTiedot();
-    paivitaValloitus();
-    voittoTarkistus();
+    if("vastaus" in jsonData) {
+      console.log(jsonData.vastaus);
+    } else {
+      lKenttaPopup(lKentta, marker);
+      paivitaTiedot();
+      paivitaValloitus();
+      voittoTarkistus();
+    }
   } else {
     console.log("Ei onnistunut valloittaminen.")
     voittoTarkistus();

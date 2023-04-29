@@ -25,7 +25,7 @@ class Pelaaja():
         return self.raha
 
     def GetPolttoAine(self):
-        return self.polttoaine
+        return round(self.polttoaine, 2)
 
     def GetSotilaat(self):
         return self.sotilaat
