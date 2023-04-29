@@ -36,6 +36,7 @@ async function newGame(evt) {
     const nimi =document.querySelector("input[name=nimi]").value;
     const response = await fetch("http://127.0.0.1:5000/newGame/" + nimi);
     const jsonData = await response.json();
+    paivitaTiedot();
     lataaja.style.display = "none";
     console.log(jsonData);
     paikatKarttaan(jsonData);
@@ -50,6 +51,20 @@ async function getPelaajanTiedot() {
 async function lKenttaTiedot(icao) {
   const response = await fetch("http://127.0.0.1:5000/getPaikka/" + icao);
   return await response.json();
+}
+
+async function paivitaTiedot() {
+  const pelaaja = await getPelaajanTiedot();
+
+  document.getElementById("pelaajaNimi").innerHTML = "";
+  document.getElementById("balance").innerHTML = "";
+  document.getElementById("fuel").innerHTML = "";
+  document.getElementById("soldiers").innerHTML = "";
+
+  document.getElementById("pelaajaNimi").appendChild(document.createTextNode(pelaaja.nimi));
+  document.getElementById("balance").appendChild(document.createTextNode(pelaaja.raha));
+  document.getElementById("fuel").appendChild(document.createTextNode(pelaaja.pAine));
+  document.getElementById("soldiers").appendChild(document.createTextNode(pelaaja.sotilaat));
 }
 
 function paikatKarttaan(jsonData) {
@@ -71,7 +86,7 @@ async function lKenttaPopup(lKentta, marker) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupText = document.createElement("p");
-    popupText.appendChild(document.createTextNode("Olet täällä"));
+    popupText.appendChild(document.createTextNode("You are here"));
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
@@ -88,10 +103,10 @@ async function lKenttaPopup(lKentta, marker) {
     const popupHeader = document.createElement("h2");
     const etaisyysText = document.createElement("p");
     const sotilasText = document.createElement("p");
-    sotilasText.appendChild(document.createTextNode("Lentokentän sotilaat: " + sotilaat));
-    etaisyysText.appendChild(document.createTextNode("Etäisyys: " + etaisyys));
+    sotilasText.appendChild(document.createTextNode("Airports soldiers: " + sotilaat));
+    etaisyysText.appendChild(document.createTextNode("Distance: " + etaisyys));
     const popupButton = document.createElement("button");
-    popupButton.appendChild(document.createTextNode("Matkusta"));
+    popupButton.appendChild(document.createTextNode("Travel"));
     popupButton.addEventListener("click", () => {matkusta(marker, lKentta)});
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
@@ -106,7 +121,7 @@ async function lKenttaPopup(lKentta, marker) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupText = document.createElement("p");
-    popupText.appendChild(document.createTextNode("Valloitettu"));
+    popupText.appendChild(document.createTextNode("Conquered"));
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
     popup.appendChild(popupHeader);
@@ -117,7 +132,7 @@ async function lKenttaPopup(lKentta, marker) {
     const popup = document.createElement("article");
     const popupHeader = document.createElement("h2");
     const popupButton = document.createElement("button");
-    popupButton.appendChild(document.createTextNode("Valitse aloituspaikka"));
+    popupButton.appendChild(document.createTextNode("Choose starting location"));
     popupButton.addEventListener("click", () => {aloitus(marker, lKentta)});
 
     popupHeader.appendChild(document.createTextNode(lKentta.nimi));
@@ -137,6 +152,7 @@ async function aloitus(marker, lKentta) {
   lataaja.style.display = "none";
 
   lKenttaPopup(lKentta, marker);
+  paivitaTiedot();
   voittoTarkistus();
 }
 
@@ -149,6 +165,7 @@ async function matkusta(marker, lKentta) {
     lataaja.style.display = "none";
 
     lKenttaPopup(lKentta, marker);
+    paivitaTiedot();
     voittoTarkistus();
   } else {
     console.log("Ei onnistunut valloittaminen.")
@@ -221,10 +238,11 @@ function uusiPeli() {
 }
 
 function osto(jsonData) {
-  if("vastaus" in jsonData) {x
+  if("vastaus" in jsonData) {
     console.log("ei onnistunut");
   } else {
     console.log("onnistui");
+    paivitaTiedot();
     havinnytTarkistus();
   }
 }
