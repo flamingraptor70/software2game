@@ -67,6 +67,14 @@ async function paivitaTiedot() {
   document.getElementById("soldiers").appendChild(document.createTextNode(pelaaja.sotilaat));
 }
 
+function paivitaValloitus() {
+  let arvo = document.getElementById("countries").innerHTML;
+  console.log(arvo);
+  arvo = parseInt(arvo) + 1
+  document.getElementById("countries").innerHTML = "";
+  document.getElementById("countries").appendChild(document.createTextNode((arvo).toString()));
+}
+
 function paikatKarttaan(jsonData) {
   for(let i = 0; i < jsonData.length; i++) {
     lKentat.push(jsonData[i].icao);
@@ -153,6 +161,7 @@ async function aloitus(marker, lKentta) {
 
   lKenttaPopup(lKentta, marker);
   paivitaTiedot();
+  paivitaValloitus();
   voittoTarkistus();
 }
 
@@ -166,6 +175,7 @@ async function matkusta(marker, lKentta) {
 
     lKenttaPopup(lKentta, marker);
     paivitaTiedot();
+    paivitaValloitus();
     voittoTarkistus();
   } else {
     console.log("Ei onnistunut valloittaminen.")
