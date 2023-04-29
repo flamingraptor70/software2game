@@ -166,31 +166,31 @@ async function aloitus(marker, lKentta) {
 }
 
 async function matkusta(marker, lKentta) {
-  if(taistelu(lKentta)) {
-    lataaja.style.display = "block";
-    const response = await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
-    const jsonData = await response.json();
-    console.log(jsonData);
-    lataaja.style.display = "none";
+  lataaja.style.display = "block";
+  const response = await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
+  const jsonData = await response.json();
+  console.log(jsonData);
+  lataaja.style.display = "none";
 
-    if("vastaus" in jsonData) {
-      console.log(jsonData.vastaus);
+  if("vastaus" in jsonData) {
+    console.log(jsonData.vastaus);
 
-      const popup = document.createElement("article");
-      const popupText = document.createElement("p");
-      popupText.appendChild(document.createTextNode(jsonData.vastaus));
-      popup.appendChild(popupText);
+    const popup = document.createElement("article");
+    const popupText = document.createElement("p");
+    popupText.appendChild(document.createTextNode(jsonData.vastaus));
+    popup.appendChild(popupText);
 
-      marker.bindPopup(popup);
-    } else {
+    marker.bindPopup(popup);
+  } else {
+    if(taistelu(lKentta)) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
       voittoTarkistus();
+    } else {
+      console.log("Ei onnistunut valloittaminen.")
+      voittoTarkistus();
     }
-  } else {
-    console.log("Ei onnistunut valloittaminen.")
-    voittoTarkistus();
   }
 }
 
