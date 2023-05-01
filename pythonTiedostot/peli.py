@@ -65,6 +65,31 @@ class Peli():
                 print(self.lentokentat[i].getIdent())
                 return self.lentokentat[i]
 
+    def hyokkaykset(self, omat, viholliset):
+        print(omat + " : " + viholliset)
+        omat = float(omat)
+        viholliset = float(viholliset)
+        omaH = random.randint(int(0.01 * omat), int(0.1 * omat))
+        vihollinenH = random.randint(int(0.01 * viholliset), int(0.1 * viholliset))
+
+        if omaH < 1:
+            omaH = 1
+
+        if vihollinenH < 1:
+            vihollinenH = 1
+
+        vastaus = {
+            "omaHyokkays": omaH,
+            "vihollisenHyokkays": vihollinenH
+        }
+        return vastaus
+
+    def setPelaajanSotilaat(self, sotilaat):
+        self.pelaaja.SetSotilaat(sotilaat)
+
+    def setLKentanSotilaat(self, icao, sotilaat):
+        self.oikeaLentokentta(icao).setLentokentanSotilaat(sotilaat)
+
     def Taistelu(self, ident):
         omat = float(self.pelaaja.GetSotilaat())
         lKentta = self.oikeaLentokentta(ident)

@@ -182,7 +182,7 @@ async function matkusta(marker, lKentta) {
 
     marker.bindPopup(popup);
   } else {
-    if(taistelu(lKentta)) {
+    if(taistelu(lKentta.icao)) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
@@ -194,8 +194,57 @@ async function matkusta(marker, lKentta) {
   }
 }
 
-async function taistelu(lKentta) {
-  return true;
+async function taistelu(icao) {
+  const pelaaja = await getPelaajanTiedot();
+  const lKentta = await lKenttaTiedot(icao);
+
+  console.log(pelaaja)
+
+  let omatSotilaat = parseInt(pelaaja.sotilaat, 10);
+  let viholliset = parseInt(lKentta.sotilaat, 10);
+
+  console.log("Omat: " + omatSotilaat, " viholliset: " + viholliset)
+
+  if(omatSotilaat > 0) {
+    taisteluDialog.showModal();
+    while(true) {
+      /*let omaHyokkays = Math.floor(Math.random() * omatSotilaat)
+      let vihollisenHyokkays = random.randint(int(0.01 * viholliset), int(0.1 * viholliset))*/
+      console.log("http://127.0.0.1:5000/taisteluHyokkaykset/" + omatSotilaat + "/" + viholliset)
+      const response = await fetch("http://127.0.0.1:5000/taisteluHyokkaykset/" + omatSotilaat + "/" + viholliset);
+      const hyokkaykset = await response.json();
+      console.log(hyokkaykset)
+
+      omatSotilaat =  omatSotilaat - parseInt(hyokkaykset.vihollisenHyokkays, 10);
+      viholliset = viholliset - parseInt(hyokkaykset.omaHyokkays, 10);
+
+      console.log("Omat sotilaat: " + omatSotilaat)
+      console.log("Vihollisen sotilaat: " + viholliset)
+
+      if(omatSotilaat <= 0) {
+        omatSotilaat = 0;
+        if(viholliset <= 0) {
+          viholliset = 0;
+        }
+
+        await fetch("http://127.0.0.1:5000/setPelaajanSotilaat/" + omatSotilaat, {method: "POST"});
+        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset, {method: "POST"});
+
+        taisteluDialog.close();
+        return false;
+      } else if(viholliset <= 0) {
+        viholliset = 0;
+
+        await fetch("http://127.0.0.1:5000/setPelaajanSotilaat/" + omatSotilaat, {method: "POST"});
+        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset, {method: "POST"});
+
+        taisteluDialog.close();
+        return true;
+      }
+    }
+  } else {
+    return false;
+  }
 }
 
 async function voittoTarkistus() {
