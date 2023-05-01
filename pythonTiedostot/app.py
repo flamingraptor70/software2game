@@ -42,13 +42,22 @@ def matkusta(icao):
 def taisteluHyokkaykset(omat, viholliset):
     return peli.hyokkaykset(omat, viholliset)
 
-@app.route("/setPelaajanSotilaat/<sotilaat>")
-def setPelaajanSotilaat(sotilaat):
+@app.route("/pelaajanSotilaat/<sotilaat>")
+def pelaajanSotilaat(sotilaat):
     peli.setPelaajanSotilaat(sotilaat)
+    vastaus = {
+        "vastaus": "tehty"
+    }
+    print(peli.pelaaja.GetSotilaat())
+    return vastaus
 
 @app.route("/lKentanSotilaat/<icao>/<sotilaat>")
 def lKentanSotilaat(icao, sotilaat):
     peli.setLKentanSotilaat(icao, sotilaat)
+    vastaus = {
+        "vastaus": "tehty"
+    }
+    return vastaus
 @app.route("/pelaajaTiedot")
 def pelaajaTiedot():
     return peli.pelaajaTiedot()

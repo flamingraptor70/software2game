@@ -182,7 +182,7 @@ async function matkusta(marker, lKentta) {
 
     marker.bindPopup(popup);
   } else {
-    if(taistelu(lKentta.icao)) {
+    if(taistelu(lKentta.icao) === true) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
@@ -227,18 +227,20 @@ async function taistelu(icao) {
           viholliset = 0;
         }
 
-        await fetch("http://127.0.0.1:5000/setPelaajanSotilaat/" + omatSotilaat, {method: "POST"});
-        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset, {method: "POST"});
+        await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
+        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset);
 
         taisteluDialog.close();
+        console.log("taistelu hävitty")
         return false;
       } else if(viholliset <= 0) {
         viholliset = 0;
 
-        await fetch("http://127.0.0.1:5000/setPelaajanSotilaat/" + omatSotilaat, {method: "POST"});
-        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset, {method: "POST"});
+        await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
+        await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset);
 
         taisteluDialog.close();
+        console.log("taistelu voitettu")
         return true;
       }
     }
