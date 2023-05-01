@@ -182,13 +182,16 @@ async function matkusta(marker, lKentta) {
 
     marker.bindPopup(popup);
   } else {
-    if(taistelu(lKentta.icao) === true) {
+    const paaseeko = await taistelu(lKentta.icao)
+    console.log(paaseeko)
+    if(paaseeko === true) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
       voittoTarkistus();
     } else {
       console.log("Ei onnistunut valloittaminen.")
+      paivitaTiedot();
       voittoTarkistus();
     }
   }
