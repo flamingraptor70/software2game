@@ -175,7 +175,7 @@ async function matkusta(marker, lKentta) {
 
     const popup = document.createElement("article");
     const popupText = document.createElement("p");
-    popupText.appendChild(document.createTextNode("Ei riitä polttoaine"));
+    popupText.appendChild(document.createTextNode("Not enough fuel"));
     popup.appendChild(popupText);
 
     marker.bindPopup(popup);
@@ -190,7 +190,12 @@ async function matkusta(marker, lKentta) {
       voittoTarkistus();
 
     } else {
-      console.log("Ei onnistunut valloittaminen.")
+      const popup = document.createElement("article");
+      const popupText = document.createElement("p");
+      popupText.appendChild(document.createTextNode("Lost battle"));
+      popup.appendChild(popupText);
+
+      marker.bindPopup(popup);
       paivitaTiedot();
       havinnytTarkistus();
     }
