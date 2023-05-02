@@ -348,10 +348,8 @@ async function voittoTarkistus() {
 async function havinnytTarkistus() {
   const pelaaja = await getPelaajanTiedot();
 
-  console.log("pelaajan raha: " + pelaaja.raha + ", pelaajan sotilaat: " + pelaaja.sotilaat)
 
   if(pelaaja.raha < 2) {
-    console.log("Pelaajalla alle 2€")
     if(pelaaja.sotilaat < 1) {
       console.log("Hävinnyt");
       havio();
