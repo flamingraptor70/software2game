@@ -217,7 +217,7 @@ async function taistelu(icao) {
       const hyokkaykset = await response.json();
       console.log(hyokkaykset)
       document.getElementById("taisteluText").innerHTML = "";
-      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+      const tText = document.createTextNode("My soldiers: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "\nEnemy soldiers: " + viholliset + " -" + hyokkaykset.omaHyokkays);
       document.getElementById("taisteluText").appendChild(tText);
 
       omatSotilaat =  omatSotilaat - parseInt(hyokkaykset.vihollisenHyokkays, 10);
@@ -233,7 +233,7 @@ async function taistelu(icao) {
         }
 
         document.getElementById("taisteluText").innerHTML = "";
-        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        const tText = document.createTextNode("My soldiers: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "\nEnemy soldiers: " + viholliset + " -" + hyokkaykset.omaHyokkays);
         document.getElementById("taisteluText").appendChild(tText);
 
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
@@ -241,13 +241,12 @@ async function taistelu(icao) {
 
         await timer(1000);
         taisteluDialog.close();
-        console.log("taistelu hävitty")
         return false;
       } else if(viholliset <= 0) {
         viholliset = 0;
 
         document.getElementById("taisteluText").innerHTML = "";
-        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        const tText = document.createTextNode("My soldiers: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "\nEnemy soldiers: " + viholliset + " -" + hyokkaykset.omaHyokkays);
         document.getElementById("taisteluText").appendChild(tText);
 
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
@@ -255,7 +254,6 @@ async function taistelu(icao) {
 
         await timer(1000);
         taisteluDialog.close();
-        console.log("taistelu voitettu")
         return true;
       }
     }
