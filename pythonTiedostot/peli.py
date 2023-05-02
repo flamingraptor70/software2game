@@ -173,7 +173,7 @@ class Peli():
         print(self.kysymykset)
 
     def matemaattinenOngelma(self):
-        noppa = random.randint(0, len(self.kysymykset))
+        noppa = random.randint(0, len(self.kysymykset)-1)
         return self.kysymykset[noppa]
 
     def HavinnytTarkistus(self, lista):

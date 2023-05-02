@@ -6,7 +6,7 @@ let aValittu = false;
 let tiedotLadattu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
-const kysymysDialog = document.getElementById("kysymysDialog");
+//const kysymysDialog = document.getElementById("kysymysDialog");
 const loppuDialog = document.getElementById("loppuDialog");
 const lKentat = []
 let latamassaTietoja = false;
@@ -169,27 +169,52 @@ async function aloitus(marker, lKentta) {
 }
 
 async function kysymys() {
-  document.getElementById("qText").innerHTML = "";
   const response = await fetch("http://127.0.0.1:5000/ongelma");
   const vastausJson = await response.json();
+  const dialog = document.getElementById("kysymysDialog");
+  document.getElementById("cB").style.display = "none";
 
-  console.log(vastausJson)
+  /*const dHeader = document.createElement("h2");
+  dHeader.appendChild(document.createTextNode("Question:"));*/
 
-  const kysymys = document.createTextNode(vastausJson.kysymys);
-  document.getElementById("qText").appendChild(kysymys);
-  document.getElementById("qForm").addEventListener("submit", () => {kysymyksenTarkistus(vastausJson.vastaus)});
-  kysymysDialog.showModal();
+  const qForm = document.getElementById("qForm");
+  qForm.innerHTML = "";
+  //qForm.onsubmit = false
+  const kysymys = document.createElement("p");
+  kysymys.appendChild(document.createTextNode(vastausJson.kysymys));
+  const vastaus = document.createElement("input");
+  vastaus.name = "qAnswer";
+  vastaus.type = "text";
+  const submit = document.createElement("input");
+  submit.type = "submit";
+  submit.value = "submit";
+
+  qForm.appendChild(kysymys);
+  qForm.appendChild(vastaus);
+  qForm.appendChild(submit);
+
+  qForm.addEventListener("submit", function eventHandler() {
+    kysymyksenTarkistus(vastausJson.vastaus, dialog);
+    this.removeEventListener("submit", eventHandler);
+  });
+
+  //dialog.appendChild(dHeader);
+  dialog.appendChild(qForm);
+  dialog.showModal();
 }
 
-async function kysymyksenTarkistus(oikeaVastaus) {
-
-  const closeButton = document.createElement("button");
-  closeButton.appendChild(document.createTextNode("close"));
+async function kysymyksenTarkistus(oikeaVastaus, dialog) {
+  /*const closeButton = document.createElement("button");
+  closeButton.appendChild(document.createTextNode("close"));*/
+  document.getElementById("cB")
+  const closeButton = document.getElementById("cB");
   closeButton.addEventListener("click", function() {
-    kysymysDialog.close();
+    dialog.close();
   });
+
   const vastaus = document.querySelector("input[name=qAnswer]").value;
-  const vastausText = document.createElement("p");
+  document.getElementById("vT").textContent = "";
+  const vastausText = document.getElementById("vT");
 
   if(vastaus === oikeaVastaus) {
     vastausText.appendChild(document.createTextNode("Correct answer. You get 1000€"));
@@ -199,8 +224,9 @@ async function kysymyksenTarkistus(oikeaVastaus) {
     vastausText.appendChild(document.createTextNode("Incorrect answer"));
   }
 
-  kysymysDialog.appendChild(vastausText);
-  kysymysDialog.appendChild(closeButton);
+  dialog.appendChild(vastausText);
+  document.getElementById("cB").style.display = "block";
+  //dialog.appendChild(closeButton);
 }
 
 async function matkusta(marker, lKentta) {
