@@ -12,7 +12,7 @@ app.config["CORS_HEADERS"] = "content-type"
 peli = Peli()
 @app.route("/newGame/<pNimi>")
 def newGame(pNimi):
-    peli.LuoPeli(pNimi, 10000, 10000, 10000, 0)
+    peli.LuoPeli(pNimi, 1000, 1000, 1000, 0)
     peli.ArvoPaikat()
     peli.luoKysymykset()
     return peli.getPaikat()

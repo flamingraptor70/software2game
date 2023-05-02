@@ -17,7 +17,7 @@ class Peli():
         '''self.kauppa = Kauppa(self.pelaaja)'''
 
     def ArvoPaikat(self):
-        sql = "SELECT iso_country FROM airport WHERE continent = 'EU' GROUP BY iso_country ORDER BY RAND() LIMIT 10"
+        sql = "SELECT iso_country FROM airport WHERE continent = 'EU' GROUP BY iso_country ORDER BY RAND()"
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchall()
