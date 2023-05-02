@@ -3,6 +3,7 @@
 const sw = L.latLng(-90, -180), ne = L.latLng(90, 180);
 const bounds = L.latLngBounds(sw, ne);
 let aValittu = false;
+let tiedotLadattu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
 const loppuDialog = document.getElementById("loppuDialog");
@@ -29,8 +30,9 @@ const pAineForm = document.getElementById("ostaPAineForm");
 const sotilasForm = document.getElementById("ostaSotilaitaForm");
 
 async function newGame(evt) {
-  if(!latamassaTietoja) {
+  if(!latamassaTietoja && tiedotLadattu === false) {
     evt.preventDefault();
+    tiedotLadattu = true;
     latamassaTietoja = true;
     lataaja.style.display = "block";
     const nimi =document.querySelector("input[name=nimi]").value;
@@ -192,7 +194,7 @@ async function matkusta(marker, lKentta) {
     } else {
       console.log("Ei onnistunut valloittaminen.")
       paivitaTiedot();
-      voittoTarkistus();
+      havinnytTarkistus();
     }
   }
 }
@@ -219,17 +221,13 @@ async function taistelu(icao) {
       const hyokkaykset = await response.json();
       console.log(hyokkaykset)
       document.getElementById("taisteluText").innerHTML = "";
-      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "\nVihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
-      console.log(tText)
+      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
       document.getElementById("taisteluText").appendChild(tText);
 
       omatSotilaat =  omatSotilaat - parseInt(hyokkaykset.vihollisenHyokkays, 10);
       viholliset = viholliset - parseInt(hyokkaykset.omaHyokkays, 10);
 
-      console.log("Omat sotilaat: " + omatSotilaat)
-      console.log("Vihollisen sotilaat: " + viholliset)
-
-      await timer(2500);
+      await timer(1000);
 
       if(omatSotilaat <= 0) {
         omatSotilaat = 0;
@@ -237,18 +235,29 @@ async function taistelu(icao) {
         if(viholliset <= 0) {
           viholliset = 0;
         }
+
+        document.getElementById("taisteluText").innerHTML = "";
+        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        document.getElementById("taisteluText").appendChild(tText);
+
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
         await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset);
 
+        await timer(1000);
         taisteluDialog.close();
         console.log("taistelu hävitty")
         return false;
       } else if(viholliset <= 0) {
         viholliset = 0;
 
+        document.getElementById("taisteluText").innerHTML = "";
+        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        document.getElementById("taisteluText").appendChild(tText);
+
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
         await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset);
 
+        await timer(1000);
         taisteluDialog.close();
         console.log("taistelu voitettu")
         return true;
