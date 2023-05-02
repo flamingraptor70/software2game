@@ -14,6 +14,7 @@ peli = Peli()
 def newGame(pNimi):
     peli.LuoPeli(pNimi, 1000, 1000, 1000, 0)
     peli.ArvoPaikat()
+    peli.luoKysymykset()
     return peli.getPaikat()
 
 @app.route("/vAloitus/<icao>")
@@ -79,6 +80,9 @@ def ostaSotilaita(maara):
         }
         return vastaus
 
+@app.route("/ongelma")
+def ongelma():
+    return peli.matemaattinenOngelma()
 
 
 if __name__ == '__main__':

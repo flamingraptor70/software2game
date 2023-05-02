@@ -6,6 +6,7 @@ let aValittu = false;
 let tiedotLadattu = false;
 const lataaja = document.getElementById("lataus");
 const taisteluDialog = document.getElementById("taisteluDialog");
+const kysymysDialog = document.getElementById("kysymysDialog");
 const loppuDialog = document.getElementById("loppuDialog");
 const lKentat = []
 let latamassaTietoja = false;
@@ -167,6 +168,25 @@ async function aloitus(marker, lKentta) {
   voittoTarkistus();
 }
 
+function kysymyksenTarkistus(evt, vastaus) {
+  evt.preventDefault();
+
+
+}
+
+async function kysymys() {
+  document.getElementById("qText").innerHTML = "";
+  const response = await fetch("http://127.0.0.1:5000/ongelma");
+  const vastausJson = await response.json();
+
+  console.log(vastausJson)
+
+  const kysymys = document.createTextNode(vastausJson.kysymys);
+  document.getElementById("qText").appendChild(kysymys);
+  document.getElementById("qForm").addEventListener("submit", () => {kysymyksenTarkistus(vastausJson.vastaus)});
+  kysymysDialog.showModal();
+}
+
 async function matkusta(marker, lKentta) {
   lKentta = await lKenttaTiedot(lKentta.icao);
   const pelaaja = await getPelaajanTiedot();
@@ -202,7 +222,7 @@ async function matkusta(marker, lKentta) {
   }
 }
 
-const timer = ms => new Promise(res => setTimeout(res, ms))
+const timer = ms => new Promise(res => setTimeout(res, ms));
 async function taistelu(icao) {
   const pelaaja = await getPelaajanTiedot();
   const lKentta = await lKenttaTiedot(icao);

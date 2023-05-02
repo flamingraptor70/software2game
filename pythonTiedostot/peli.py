@@ -3,6 +3,8 @@ from pelaaja import Pelaaja
 from yhteys import yhteys
 import random
 from geopy.distance import geodesic
+import requests
+import json
 
 class Peli():
     def __init__(self):
@@ -10,6 +12,7 @@ class Peli():
 
     def LuoPeli(self, pNimi, polttoAine, omatSotilaat, raha, score):
         self.lentokentat = []
+        self.kysymykset = []
         self.pelaaja = Pelaaja(pNimi, raha, polttoAine, omatSotilaat, score, yhteys)
         '''self.kauppa = Kauppa(self.pelaaja)'''
 
@@ -131,42 +134,9 @@ class Peli():
             return False
 
     def ValitseAloitus(self, sijainti):
-        asemat = "Valitse aloitusasema kirjoittamalla lentokentän icao-koodi:\n"
-        for i in range(len(self.lentokentat)):
-            valiVaihe = self.lentokentat[i]
-            asemat += "Icao-koodi: " + valiVaihe.getIdent() + ", nimi: " + valiVaihe.getLentokentanNimi() + ", maa: " + valiVaihe.getLentokentanMaa() + "\n"
-            '''
-            Tallenna tietokantaan muutokset
-            '''
-        print(asemat)
-        '''sijainti = input("Aloitusasema: ")'''
         self.pelaaja.SetSijainti(sijainti)
         self.oikeaLentokentta(sijainti).Valloita()
-
-        '''Valloita(nykySijainti)'''
         return
-
-    '''def Matkat(self):
-        matkat = "Valitse matka kirjoittamalla lentokentän icao-koodi:\n"
-        tyhja = True
-        polttoAine = float(self.pelaaja.GetPolttoAine())
-        for i in range(len(self.lentokentat)):
-            valiVaihe = self.lentokentat[i]
-            etaisyys = geodesic(self.oikeaLentokentta(self.pelaaja.GetSijainti()).getLentokentanKoordinaatit(), valiVaihe.getLentokentanKoordinaatit()).km
-            etaisyys = geodesic(Haekoordinaatit(nykySijainti), Haekoordinaatit(valiVaihe[0])).km
-            if valiVaihe != self.pelaaja.GetSijainti():
-                if etaisyys <= float(polttoAine) and valiVaihe.onkoValloitettu() == False:
-                    tyhja = False
-                    matkat += "Icao-koodi: " + valiVaihe.getIdent() + ", nimi: " + valiVaihe.getLentokentanNimi() + ", maa: " + valiVaihe.getLentokentanMaa() \
-                                + ", matka: " + str(etaisyys) + ", sotilaat: " + str(valiVaihe.getLentokentanSotilaat()) + "\n"
-        if tyhja == True:
-            return print("Et voi matkustaa mihinkään.")
-        else:
-            print(matkat)
-            kohde = input("Matkustuskohde: ")
-            self.Matkusta(kohde)
-            return
-        return'''
 
     def getLentokentanKoordinaatit(self, icao):
         print("Lentokentän koordinaatit: " + str(self.oikeaLentokentta(icao).getLentokentanLat()) + ", " + str(self.oikeaLentokentta(icao).getLentokentanLon()))
@@ -190,22 +160,21 @@ class Peli():
         self.oikeaLentokentta(kohde).Valloita()
         '''self.MatemaattinenOngelma()'''
 
-    def MatemaattinenOngelma(self):
-        sql = "SELECT Questions_text, Answer FROM Questions ORDER BY RAND() LIMIT 1"
-        kursori = yhteys.cursor()
-        kursori.execute(sql)
-        tulos = kursori.fetchall()
-        if kursori.rowcount > 0:
-            for rivi in tulos:
-                print("Vastaa seuraavaan kysymykseen oikein suorittaaksesi kidnappauksen: " + rivi[0])
-                vastaus = input("Vastaus: ")
-                if float(vastaus) == float(rivi[1]):
-                    print("Vastaus oikein. Sait kidnappauksesta 1000 €")
-                    raha = float(self.pelaaja.GetRaha()) + float(1000)
-                    self.pelaaja.SetRaha(raha)
-                else:
-                    print("Vastaus väärin.")
-        return
+    def luoKysymykset(self):
+        pyynto = "https://opentdb.com/api.php?amount=10&category=19&type=multiple"
+        vastaus = requests.get(pyynto).json()
+        json.dumps(vastaus, indent=2)
+        for i in vastaus:
+            kysymys = {
+                "kysymys": i["results"]["question"],
+                "vastaus": i["results"]["correct_answer"]
+            }
+            self.kysymykset.append(kysymys)
+        print(self.kysymykset)
+
+    def matemaattinenOngelma(self):
+        noppa = random.randint(0, len(self.kysymykset))
+        return self.kysymykset[noppa]
 
     def HavinnytTarkistus(self, lista):
         global nykySijainti
