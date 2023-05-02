@@ -197,6 +197,7 @@ async function matkusta(marker, lKentta) {
   }
 }
 
+const timer = ms => new Promise(res => setTimeout(res, ms))
 async function taistelu(icao) {
   const pelaaja = await getPelaajanTiedot();
   const lKentta = await lKenttaTiedot(icao);
@@ -217,6 +218,10 @@ async function taistelu(icao) {
       const response = await fetch("http://127.0.0.1:5000/taisteluHyokkaykset/" + omatSotilaat + "/" + viholliset);
       const hyokkaykset = await response.json();
       console.log(hyokkaykset)
+      document.getElementById("taisteluText").innerHTML = "";
+      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "\nVihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+      console.log(tText)
+      document.getElementById("taisteluText").appendChild(tText);
 
       omatSotilaat =  omatSotilaat - parseInt(hyokkaykset.vihollisenHyokkays, 10);
       viholliset = viholliset - parseInt(hyokkaykset.omaHyokkays, 10);
@@ -224,12 +229,14 @@ async function taistelu(icao) {
       console.log("Omat sotilaat: " + omatSotilaat)
       console.log("Vihollisen sotilaat: " + viholliset)
 
+      await timer(2500);
+
       if(omatSotilaat <= 0) {
         omatSotilaat = 0;
+
         if(viholliset <= 0) {
           viholliset = 0;
         }
-
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
         await fetch("http://127.0.0.1:5000/lKentanSotilaat/" + icao + "/" + viholliset);
 
