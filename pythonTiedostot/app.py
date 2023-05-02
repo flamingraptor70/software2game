@@ -84,6 +84,16 @@ def ostaSotilaita(maara):
 def ongelma():
     return peli.matemaattinenOngelma()
 
+@app.route("/pelaajanRahat/<muutos>")
+def pelaajanRahat(muutos):
+    raha = peli.pelaajaTiedot().get("raha")
+    raha += float(muutos)
+    peli.pelaaja.SetRaha(raha)
+    vastaus = {
+        "vastaus": "Tehty"
+    }
+    return vastaus
+
 
 if __name__ == '__main__':
     app.run(use_reloader=True, host='127.0.0.1', port=5000)

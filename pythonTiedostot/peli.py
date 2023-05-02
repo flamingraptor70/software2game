@@ -163,13 +163,13 @@ class Peli():
     def luoKysymykset(self):
         pyynto = "https://opentdb.com/api.php?amount=10&category=19&type=multiple"
         vastaus = requests.get(pyynto).json()
-        json.dumps(vastaus, indent=2)
-        for i in vastaus:
+        for i in range(len(vastaus["results"])):
             kysymys = {
-                "kysymys": i["results"]["question"],
-                "vastaus": i["results"]["correct_answer"]
+                "kysymys": vastaus["results"][i]["question"],
+                "vastaus": vastaus["results"][i]["correct_answer"]
             }
             self.kysymykset.append(kysymys)
+        print("Kysymykset pituus: " + str(len(self.kysymykset)))
         print(self.kysymykset)
 
     def matemaattinenOngelma(self):

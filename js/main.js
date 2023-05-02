@@ -168,12 +168,6 @@ async function aloitus(marker, lKentta) {
   voittoTarkistus();
 }
 
-function kysymyksenTarkistus(evt, vastaus) {
-  evt.preventDefault();
-
-
-}
-
 async function kysymys() {
   document.getElementById("qText").innerHTML = "";
   const response = await fetch("http://127.0.0.1:5000/ongelma");
@@ -185,6 +179,28 @@ async function kysymys() {
   document.getElementById("qText").appendChild(kysymys);
   document.getElementById("qForm").addEventListener("submit", () => {kysymyksenTarkistus(vastausJson.vastaus)});
   kysymysDialog.showModal();
+}
+
+async function kysymyksenTarkistus(oikeaVastaus) {
+
+  const closeButton = document.createElement("button");
+  closeButton.appendChild(document.createTextNode("close"));
+  closeButton.addEventListener("click", function() {
+    kysymysDialog.close();
+  });
+  const vastaus = document.querySelector("input[name=qAnswer]").value;
+  const vastausText = document.createElement("p");
+
+  if(vastaus === oikeaVastaus) {
+    vastausText.appendChild(document.createTextNode("Correct answer. You get 1000€"));
+    await fetch("http://127.0.0.1:5000/pelaajanRahat/" + 1000);
+    paivitaTiedot();
+  } else {
+    vastausText.appendChild(document.createTextNode("Incorrect answer"));
+  }
+
+  kysymysDialog.appendChild(vastausText);
+  kysymysDialog.appendChild(closeButton);
 }
 
 async function matkusta(marker, lKentta) {
@@ -204,6 +220,7 @@ async function matkusta(marker, lKentta) {
     console.log(paaseeko)
     if(paaseeko === true) {
       await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
+      kysymys();
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();

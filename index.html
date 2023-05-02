@@ -90,9 +90,10 @@
 
     <dialog id="kysymysDialog">
         <h2>Question:</h2>
-        <form>
+        <form id="qForm" onsubmit="return false;">
             <p id="qText"></p>
-            <input name="qAnswer" type="submit" value="submit">
+            <input name="qAnswer" type="text">
+            <input type="submit" value="submit">
         </form>
     </dialog>
 
