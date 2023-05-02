@@ -168,18 +168,14 @@ async function aloitus(marker, lKentta) {
 }
 
 async function matkusta(marker, lKentta) {
-  lataaja.style.display = "block";
-  const response = await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
-  const jsonData = await response.json();
-  console.log(jsonData);
-  lataaja.style.display = "none";
+  lKentta = await lKenttaTiedot(lKentta.icao);
+  const pelaaja = await getPelaajanTiedot();
 
-  if("vastaus" in jsonData) {
-    console.log(jsonData.vastaus);
+  if(lKentta.etaisyys > pelaaja.pAine) {
 
     const popup = document.createElement("article");
     const popupText = document.createElement("p");
-    popupText.appendChild(document.createTextNode(jsonData.vastaus));
+    popupText.appendChild(document.createTextNode("Ei riitä polttoaine"));
     popup.appendChild(popupText);
 
     marker.bindPopup(popup);
@@ -187,10 +183,12 @@ async function matkusta(marker, lKentta) {
     const paaseeko = await taistelu(lKentta.icao)
     console.log(paaseeko)
     if(paaseeko === true) {
+      await fetch("http://127.0.0.1:5000/matkusta/" + lKentta.icao);
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
       voittoTarkistus();
+
     } else {
       console.log("Ei onnistunut valloittaminen.")
       paivitaTiedot();
