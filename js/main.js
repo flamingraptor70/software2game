@@ -212,14 +212,12 @@ async function taistelu(icao) {
   if(omatSotilaat > 0) {
     taisteluDialog.showModal();
     while(true) {
-      /*let omaHyokkays = Math.floor(Math.random() * omatSotilaat)
-      let vihollisenHyokkays = random.randint(int(0.01 * viholliset), int(0.1 * viholliset))*/
       console.log("http://127.0.0.1:5000/taisteluHyokkaykset/" + omatSotilaat + "/" + viholliset)
       const response = await fetch("http://127.0.0.1:5000/taisteluHyokkaykset/" + omatSotilaat + "/" + viholliset);
       const hyokkaykset = await response.json();
       console.log(hyokkaykset)
       document.getElementById("taisteluText").innerHTML = "";
-      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+      const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
       document.getElementById("taisteluText").appendChild(tText);
 
       omatSotilaat =  omatSotilaat - parseInt(hyokkaykset.vihollisenHyokkays, 10);
@@ -235,7 +233,7 @@ async function taistelu(icao) {
         }
 
         document.getElementById("taisteluText").innerHTML = "";
-        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
         document.getElementById("taisteluText").appendChild(tText);
 
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
@@ -249,7 +247,7 @@ async function taistelu(icao) {
         viholliset = 0;
 
         document.getElementById("taisteluText").innerHTML = "";
-        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + "Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
+        const tText = document.createTextNode("Omat sotilaat: " + omatSotilaat + " -" + hyokkaykset.vihollisenHyokkays + " Vihollisen sotilaat: " + viholliset + " -" + hyokkaykset.omaHyokkays);
         document.getElementById("taisteluText").appendChild(tText);
 
         await fetch("http://127.0.0.1:5000/pelaajanSotilaat/" + omatSotilaat);
