@@ -165,13 +165,14 @@ async function aloitus(marker, lKentta) {
   lKenttaPopup(lKentta, marker);
   paivitaTiedot();
   paivitaValloitus();
-  voittoTarkistus();
+  await voittoTarkistus();
 }
 
 async function kysymys() {
   const response = await fetch("http://127.0.0.1:5000/ongelma");
   const vastausJson = await response.json();
   const dialog = document.getElementById("kysymysDialog");
+  document.getElementById("vT").textContent = "";
   document.getElementById("cB").style.display = "none";
 
   /*const dHeader = document.createElement("h2");
@@ -206,14 +207,12 @@ async function kysymys() {
 async function kysymyksenTarkistus(oikeaVastaus, dialog) {
   /*const closeButton = document.createElement("button");
   closeButton.appendChild(document.createTextNode("close"));*/
-  document.getElementById("cB")
   const closeButton = document.getElementById("cB");
   closeButton.addEventListener("click", function() {
     dialog.close();
   });
 
   const vastaus = document.querySelector("input[name=qAnswer]").value;
-  document.getElementById("vT").textContent = "";
   const vastausText = document.getElementById("vT");
 
   if(vastaus === oikeaVastaus) {
@@ -250,17 +249,17 @@ async function matkusta(marker, lKentta) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
-      voittoTarkistus();
+      await voittoTarkistus();
 
     } else {
+      paivitaTiedot();
+      await voittoTarkistus();
       const popup = document.createElement("article");
       const popupText = document.createElement("p");
       popupText.appendChild(document.createTextNode("Lost battle"));
       popup.appendChild(popupText);
 
       marker.bindPopup(popup);
-      paivitaTiedot();
-      havinnytTarkistus();
     }
   }
 }
@@ -348,6 +347,17 @@ async function voittoTarkistus() {
 
 async function havinnytTarkistus() {
   const pelaaja = await getPelaajanTiedot();
+
+  console.log("pelaajan raha: " + pelaaja.raha + ", pelaajan sotilaat: " + pelaaja.sotilaat)
+
+  if(pelaaja.raha < 2) {
+    console.log("Pelaajalla alle 2€")
+    if(pelaaja.sotilaat < 1) {
+      console.log("Hävinnyt");
+      havio();
+    }
+  }
+  console.log("Tarkistamassa häviötä")
   let lahin = "";
 
   for(let i = 0; i < lKentat.length; i++) {
@@ -363,10 +373,7 @@ async function havinnytTarkistus() {
 
   const maxPolttoAine = pelaaja.pAine + (pelaaja.raha * 2);
 
-  if(pelaaja.raha < 2 && pelaaja.sotilaat === 0) {
-    console.log("Hävinnyt");
-    havio();
-  } else if(lahin.etaisyys > maxPolttoAine) {
+  if(lahin.etaisyys > maxPolttoAine) {
     console.log("Hävinnyt");
     havio();
   }
