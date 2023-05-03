@@ -219,8 +219,10 @@ async function kysymyksenTarkistus(oikeaVastaus, dialog) {
     vastausText.appendChild(document.createTextNode("Correct answer. You get 1000€"));
     await fetch("http://127.0.0.1:5000/pelaajanRahat/" + 1000);
     paivitaTiedot();
+    voittoTarkistus();
   } else {
     vastausText.appendChild(document.createTextNode("Incorrect answer"));
+    voittoTarkistus();
   }
 
   dialog.appendChild(vastausText);
@@ -249,7 +251,7 @@ async function matkusta(marker, lKentta) {
       lKenttaPopup(lKentta, marker);
       paivitaTiedot();
       paivitaValloitus();
-      await voittoTarkistus();
+      //await voittoTarkistus();
 
     } else {
       paivitaTiedot();
